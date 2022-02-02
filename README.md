@@ -10,4 +10,4 @@ Blog site where gators share reviews regarding all the places at UF. Possibly a 
 
 # Stack:
 1. Backend - Golang
-2. Frontend - Angular, React
+2. Frontend - React
