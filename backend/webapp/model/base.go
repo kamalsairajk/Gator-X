@@ -1,12 +1,16 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type BaseReview struct {
 	gorm.Model
-	Name   string `form:"Name" json:"name" binding:"required"`
-	Review string `form:"Review" json:"review" binding:"required"`
-	Rating int    `form:"Rating" json:"rating" binding:"required"`
+	Name      string `form:"Name" json:"name" binding:"required"`
+	Review    string `form:"Review" json:"review" binding:"required"`
+	Rating    int    `form:"Rating" json:"rating" binding:"required"`
+	Placename string `form:"Placename" json:"placename" binding:"required"`
+	Location  string `form:"Location" json:"location" binding:"required"`
 }
 
 type Places struct {

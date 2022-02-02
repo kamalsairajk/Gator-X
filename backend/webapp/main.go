@@ -25,6 +25,10 @@ func main() {
 
 	server.GET("/getallplaces", view.GetallplacesView(db))
 	server.POST("/postplace", view.PostplaceView(db))
+	server.GET("/getallreviews", view.GetallreviewsView(db))
+	server.POST("/postreview", view.PostreviewView(db))
+	server.POST("/editreview", view.EditreviewView(db))
+	server.POST("/deletereview", view.DeletereviewView(db))
 
 	server.Run()
 
