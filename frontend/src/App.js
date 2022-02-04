@@ -1,14 +1,18 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, 
 Link } from "react-router-dom";
-import Layout from '/frontend/Page-elements/Layout';
-import Homepage from '/frontend/components/Homepage'
-import Review from '/frontend/components/Review'
+import Homepage from './components/Homepage'
+import Review from './components/Review'
 
 const App = () => {
   <Router>
+    <nav>
+      <Link to = "/"> Homepage </Link>
+      <Link to = "/review"> Review </Link>
+    </nav>
       <Routes>
-          <Route path = '/' component = {Homepage}/>
+          <Route path = '/' element = {Homepage}/>
+          <Route path = '/Review' element = {<Review />}/>
       </Routes>
   </Router>
 };
