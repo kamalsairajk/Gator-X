@@ -3,6 +3,8 @@ package views
 import (
 	"fmt"
 	"net/http"
+	"strconv"
+
 	model "webapp/model"
 
 	"github.com/gin-gonic/gin"
@@ -23,6 +25,14 @@ func GetallplacesView(db *gorm.DB) gin.HandlerFunc {
 			})
 			return
 		}
+		if len(places) == 0 {
+			c.JSON(http.StatusOK, gin.H{
+				"message": "currently the database is empty",
+				"result":  places,
+			})
+			return
+		}
+
 	}
 
 	return gin.HandlerFunc(fn)
@@ -37,12 +47,13 @@ func PostplaceView(db *gorm.DB) gin.HandlerFunc {
 		fmt.Println(json)
 
 		p := bluemonday.StripTagsPolicy()
-		placename := p.Sanitize(json.Placename)
-		location := p.Sanitize(json.Location)
-		type1 := p.Sanitize(json.Type)
+		json.Placename = p.Sanitize(json.Placename)
+		json.Location = p.Sanitize(json.Location)
+		json.Type = p.Sanitize(json.Type)
+		json.AvgRating, _ = strconv.Atoi(p.Sanitize(strconv.Itoa(json.AvgRating)))
 
 		var place model.Places
-		db.Find(&place, "placename = ? AND location = ? AND type = ?", placename, location, type1)
+		db.Find(&place, "placename = ? AND location = ? AND type = ?", json.Placename, json.Location, json.Type)
 		if place != (model.Places{}) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Place in that location Already Exists!"})
 			return

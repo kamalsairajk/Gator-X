@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"strconv"
 
-	// "time"
 	model "webapp/model"
 
 	"github.com/gin-gonic/gin"
@@ -26,6 +25,14 @@ func GetallreviewsView(db *gorm.DB) gin.HandlerFunc {
 			})
 			return
 		}
+		if len(reviews) == 0 {
+			c.JSON(http.StatusOK, gin.H{
+				"message": "currently the database is empty",
+				"result":  reviews,
+			})
+			return
+		}
+
 	}
 
 	return gin.HandlerFunc(fn)
@@ -38,7 +45,17 @@ func PostreviewView(db *gorm.DB) gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		fmt.Println(&json)
+		fmt.Println(json)
+
+		p := bluemonday.StripTagsPolicy()
+
+		json.ReviewTitle = p.Sanitize(json.ReviewTitle)
+		json.Review = p.Sanitize(json.Review)
+		json.Rating, _ = strconv.Atoi(p.Sanitize(strconv.Itoa(json.Rating)))
+
+		json.PlaceID, _ = strconv.Atoi(p.Sanitize(strconv.Itoa(json.PlaceID)))
+		json.ReviewerID, _ = strconv.Atoi(p.Sanitize(strconv.Itoa(json.ReviewerID)))
+
 		result := db.Create(&json)
 
 		if result.Error != nil {
@@ -62,19 +79,11 @@ func EditreviewView(db *gorm.DB) gin.HandlerFunc {
 		}
 		fmt.Println(json)
 
-		p := bluemonday.StripTagsPolicy()
-		name := p.Sanitize(json.Name)
-		placename := p.Sanitize(json.Placename)
-		location := p.Sanitize(json.Location)
+		reviewid, _ := strconv.Atoi(c.Query("reviewID"))
+		reviewerid, _ := strconv.Atoi(c.Query("reviewerID"))
 
 		var breview model.BaseReview
-		db.First(&breview, "name = ? AND placename = ?  AND location = ? ", name, placename, location)
-
-		breview.Review = p.Sanitize(json.Review)
-		i, err := strconv.Atoi(p.Sanitize(strconv.Itoa(json.Rating)))
-		fmt.Println(err)
-		breview.Rating = i
-		result := db.Save(&breview)
+		result := db.Model(&breview).Where("id = ? AND reviewer_id = ?", reviewid, reviewerid).Updates(&json)
 
 		if result.Error != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": result.Error.Error()})
@@ -90,25 +99,18 @@ func EditreviewView(db *gorm.DB) gin.HandlerFunc {
 
 func DeletereviewView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
-		var json model.BaseReview
-		if err := c.ShouldBindJSON(&json); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-		fmt.Println(json)
+		// var json model.BaseReview
+		// if err := c.ShouldBindJSON(&json); err != nil {
+		// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		// 	return
+		// }
 
-		p := bluemonday.StripTagsPolicy()
-		name := p.Sanitize(json.Name)
-		placename := p.Sanitize(json.Placename)
-		location := p.Sanitize(json.Location)
+		reviewid, _ := strconv.Atoi(c.Query("reviewID"))
+		reviewerid, _ := strconv.Atoi(c.Query("reviewerID"))
+		fmt.Println(reviewerid, reviewid)
 
 		var breview model.BaseReview
-		db.First(&breview, "name = ? AND placename = ?  AND location = ? ", name, placename, location)
-
-		// breview.Review = p.Sanitize(json.Review)
-		// i, err := strconv.Atoi(p.Sanitize(strconv.Itoa(json.Rating)))
-		// fmt.Println(err)
-		// breview.Rating = i
+		db.Find(&breview, "id = ? AND reviewer_id = ?", reviewid, reviewerid)
 		result := db.Delete(&breview)
 
 		if result.Error != nil {

@@ -6,11 +6,11 @@ import (
 
 type BaseReview struct {
 	gorm.Model
-	Name      string `form:"Name" json:"name" binding:"required"`
-	Review    string `form:"Review" json:"review" binding:"required"`
-	Rating    int    `form:"Rating" json:"rating" binding:"required"`
-	Placename string `form:"Placename" json:"placename" binding:"required"`
-	Location  string `form:"Location" json:"location" binding:"required"`
+	ReviewTitle string `form:"ReviewTitle" json:"reviewtitle" binding:"required"`
+	Review      string `form:"Review" json:"review" binding:"required"`
+	Rating      int    `form:"Rating" json:"rating" binding:"required"`
+	PlaceID     int    `form:"PlaceID" json:"placeid" binding:"required"`
+	ReviewerID  int    `form:"ReviewerID" json:"reviewerid" binding:"required"`
 }
 
 type Places struct {
@@ -18,5 +18,5 @@ type Places struct {
 	Placename string `form:"Placename" json:"placename" binding:"required"`
 	Location  string `form:"Location" json:"location" binding:"required"`
 	Type      string `form:"Type" json:"type" binding:"required"`
-	Rating    int    `form:"Rating" json:"rating" binding:"required"`
+	AvgRating int    `form:"AvgRating" json:"avgrating" binding:"required"`
 }
