@@ -18,7 +18,7 @@ The third page contains the login links for the user. The third page allows the 
 
 Here is a sample video of the User Interaction with the website:
 
-https://user-images.githubusercontent.com/46457398/152624104-eb63f9f5-9283-4494-a50b-a35ff8cd8db7.mp4
+https://user-images.githubusercontent.com/46457398/152627327-074d9a9e-ae04-4972-960c-828ff13a7961.mp4
 
 Back-end Documentation:
 
