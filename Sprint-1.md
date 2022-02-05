@@ -28,7 +28,7 @@ Also the REST api is generated for the present functionality which can be utilis
 
 First comes models folder which consists of base file with 2 models places and base reviews for a user. Next, is the views folder which consists of views pertaining to places and reviews. These views covers the CRUD functionality. And the main file which acts as a controller consisting of middleware, server execution, database generation or usage and API for the various functionality. 
 
-Here is a sample video of the backend working with the database and generation of JSON objects for frontend to work with demonstrated in POSTMAN.
+Here is a sample video of the backend working with the database and generation of JSON objects for frontend to work with demonstrated in POSTMAN. (Freemake used for low memory conversion of original video less than 10MB)
 
 
 https://user-images.githubusercontent.com/30821679/152626664-24c57efd-5add-4bda-a6b9-41aa408a46cf.mp4
