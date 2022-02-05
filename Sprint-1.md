@@ -31,8 +31,7 @@ First comes models folder which consists of base file with 2 models places and b
 Here is a sample video of the backend working with the database and generation of JSON objects for frontend to work with demonstrated in POSTMAN.
 
 
-https://user-images.githubusercontent.com/30821679/152626408-3cc16585-d9ae-44a5-90cb-85bacf87c7d8.mov
-
+https://user-images.githubusercontent.com/30821679/152626664-24c57efd-5add-4bda-a6b9-41aa408a46cf.mp4
 
 
 
