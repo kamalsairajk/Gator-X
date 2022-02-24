@@ -2,6 +2,8 @@ package views
 
 import (
 	"net/http"
+	"strconv"
+
 	model "webapp/model"
 
 	"github.com/gin-gonic/gin"
@@ -76,4 +78,42 @@ func LoginView(db *gorm.DB) gin.HandlerFunc {
 	}
 	return gin.HandlerFunc(fn)
 
+}
+func GetUserbyIDView(db *gorm.DB) gin.HandlerFunc {
+	fn := func(c *gin.Context) {
+		userid, _ := strconv.Atoi(c.Param("userID"))
+
+		var user model.User
+		result := db.Find(&user, "id = ?", userid)
+
+		if result.Error != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": result.Error.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"result": user,
+		})
+	}
+	return gin.HandlerFunc(fn)
+}
+
+func DeleteUserView(db *gorm.DB) gin.HandlerFunc {
+	fn := func(c *gin.Context) {
+		userid, _ := strconv.Atoi(c.Param("userID"))
+
+		var user model.User
+		db.Find(&user, "id = ?", userid)
+		result := db.Delete(&user)
+
+		if result.Error != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": result.Error.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"result": "User deleted from database",
+		})
+	}
+	return gin.HandlerFunc(fn)
 }
