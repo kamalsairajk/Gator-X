@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/gin-contrib/sessions"
+
 	model "webapp/model"
 
 	"github.com/gin-gonic/gin"
@@ -47,6 +49,7 @@ func RegisterView(db *gorm.DB) gin.HandlerFunc {
 
 func LoginView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
+		session := sessions.Default(c)
 		var json model.Login
 		if err := c.ShouldBindJSON(&json); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -59,6 +62,8 @@ func LoginView(db *gorm.DB) gin.HandlerFunc {
 		var user []model.User
 		db.Find(&user, "email = ? AND password = ?", json.Email, json.Password)
 		if len(user) > 0 {
+			session.Set("userId", user[0].ID)
+			session.Save()
 			c.JSON(http.StatusOK, gin.H{
 				"result": "login success",
 			})
@@ -77,6 +82,29 @@ func LoginView(db *gorm.DB) gin.HandlerFunc {
 		})
 	}
 	return gin.HandlerFunc(fn)
+
+}
+func LogoutView(c *gin.Context) {
+	session := sessions.Default(c)
+	userId := session.Get("userId")
+	if userId == nil {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"result": "Login Required",
+		})
+		return
+	}
+	session.Clear()
+	session.Save()
+	logoutuser := session.Get("userId")
+	if logoutuser == nil {
+		c.JSON(http.StatusOK, gin.H{
+			"result": "Logout successful",
+		})
+		return
+	}
+	c.JSON(http.StatusUnauthorized, gin.H{
+		"result": "Logout Failed",
+	})
 
 }
 func GetUserbyIDView(db *gorm.DB) gin.HandlerFunc {
