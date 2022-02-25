@@ -7,6 +7,7 @@ import (
 
 	model "webapp/model"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/microcosm-cc/bluemonday"
 	"gorm.io/gorm"
@@ -40,12 +41,21 @@ func GetallreviewsView(db *gorm.DB) gin.HandlerFunc {
 
 func PostreviewView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
+		session := sessions.Default(c)
+		i := session.Get("userId")
+		if i == nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user not logged in"})
+			return
+		}
+		userId := i.(uint)
+		var user model.User
+		db.First(&user, "id = ?", userId)
+
 		var json model.BaseReview
 		if err := c.ShouldBindJSON(&json); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		fmt.Println(json)
 
 		p := bluemonday.StripTagsPolicy()
 
@@ -54,8 +64,8 @@ func PostreviewView(db *gorm.DB) gin.HandlerFunc {
 		json.Rating, _ = strconv.Atoi(p.Sanitize(strconv.Itoa(json.Rating)))
 
 		json.PlaceID, _ = strconv.Atoi(p.Sanitize(strconv.Itoa(json.PlaceID)))
-		json.ReviewerID, _ = strconv.Atoi(p.Sanitize(strconv.Itoa(json.ReviewerID)))
-
+		// json.ReviewerID, _ = strconv.Atoi(p.Sanitize(strconv.Itoa(json.ReviewerID)))
+		json.ReviewerID = int(user.ID)
 		result := db.Create(&json)
 
 		if result.Error != nil {
@@ -72,6 +82,16 @@ func PostreviewView(db *gorm.DB) gin.HandlerFunc {
 
 func EditreviewView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
+		session := sessions.Default(c)
+		i := session.Get("userId")
+		if i == nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user not logged in"})
+			return
+		}
+		userId := i.(uint)
+		var user model.User
+		db.First(&user, "id = ?", userId)
+
 		var json model.BaseReview
 		if err := c.ShouldBindJSON(&json); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -80,7 +100,8 @@ func EditreviewView(db *gorm.DB) gin.HandlerFunc {
 		fmt.Println(json)
 
 		reviewid, _ := strconv.Atoi(c.Query("reviewID"))
-		reviewerid, _ := strconv.Atoi(c.Query("reviewerID"))
+		// reviewerid, _ := strconv.Atoi(c.Query("reviewerID"))
+		reviewerid := int(user.ID)
 
 		var breview model.BaseReview
 		result := db.Model(&breview).Where("id = ? AND reviewer_id = ?", reviewid, reviewerid).Updates(&json)
@@ -99,15 +120,19 @@ func EditreviewView(db *gorm.DB) gin.HandlerFunc {
 
 func DeletereviewView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
-		// var json model.BaseReview
-		// if err := c.ShouldBindJSON(&json); err != nil {
-		// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		// 	return
-		// }
-
+		session := sessions.Default(c)
+		i := session.Get("userId")
+		if i == nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user not logged in"})
+			return
+		}
+		userId := i.(uint)
+		var user model.User
+		db.First(&user, "id = ?", userId)
 		reviewid, _ := strconv.Atoi(c.Query("reviewID"))
-		reviewerid, _ := strconv.Atoi(c.Query("reviewerID"))
-		fmt.Println(reviewerid, reviewid)
+		// reviewerid, _ := strconv.Atoi(c.Query("reviewerID"))
+		reviewerid := int(userId)
+		// fmt.Println(reviewerid, reviewid)
 
 		var breview model.BaseReview
 		db.Find(&breview, "id = ? AND reviewer_id = ?", reviewid, reviewerid)
