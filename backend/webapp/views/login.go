@@ -15,7 +15,7 @@ import (
 
 func RegisterView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
-		var json model.User
+		var json model.Users
 		if err := c.ShouldBindJSON(&json); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -26,9 +26,9 @@ func RegisterView(db *gorm.DB) gin.HandlerFunc {
 		json.Phone = p.Sanitize(json.Phone)
 		json.Password = p.Sanitize(json.Password)
 
-		var user model.User
+		var user model.Users
 		db.Find(&user, "email = ?", json.Email)
-		if user != (model.User{}) {
+		if user != (model.Users{}) {
 			c.JSON(http.StatusConflict, gin.H{"error": "User Already Exists!"})
 			return
 		}
@@ -59,7 +59,7 @@ func LoginView(db *gorm.DB) gin.HandlerFunc {
 		json.Email = p.Sanitize(json.Email)
 		json.Password = p.Sanitize(json.Password)
 
-		var user []model.User
+		var user []model.Users
 		db.Find(&user, "email = ? AND password = ?", json.Email, json.Password)
 		if len(user) > 0 {
 			session.Set("userId", user[0].ID)
@@ -69,6 +69,7 @@ func LoginView(db *gorm.DB) gin.HandlerFunc {
 			})
 			return
 		}
+		//password checking - first email and then password
 		if len(user) == 0 {
 			c.JSON(http.StatusOK, gin.H{
 				"message": "currently the database is empty",
@@ -111,7 +112,7 @@ func GetUserbyIDView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		userid, _ := strconv.Atoi(c.Param("userID"))
 
-		var user model.User
+		var user model.Users
 		result := db.Find(&user, "id = ?", userid)
 
 		if result.Error != nil {
@@ -130,7 +131,7 @@ func DeleteUserView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		userid, _ := strconv.Atoi(c.Param("userID"))
 
-		var user model.User
+		var user model.Users
 		db.Find(&user, "id = ?", userid)
 		result := db.Delete(&user)
 

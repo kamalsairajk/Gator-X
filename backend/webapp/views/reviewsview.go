@@ -48,7 +48,7 @@ func PostreviewView(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 		userId := i.(uint)
-		var user model.User
+		var user model.Users
 		db.First(&user, "id = ?", userId)
 
 		var json model.BaseReview
@@ -89,7 +89,7 @@ func EditreviewView(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 		userId := i.(uint)
-		var user model.User
+		var user model.Users
 		db.First(&user, "id = ?", userId)
 
 		var json model.BaseReview
@@ -99,7 +99,7 @@ func EditreviewView(db *gorm.DB) gin.HandlerFunc {
 		}
 		fmt.Println(json)
 
-		reviewid, _ := strconv.Atoi(c.Query("reviewID"))
+		reviewid, _ := strconv.Atoi(c.Param("reviewID"))
 		// reviewerid, _ := strconv.Atoi(c.Query("reviewerID"))
 		reviewerid := int(user.ID)
 
@@ -127,9 +127,9 @@ func DeletereviewView(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 		userId := i.(uint)
-		var user model.User
+		var user model.Users
 		db.First(&user, "id = ?", userId)
-		reviewid, _ := strconv.Atoi(c.Query("reviewID"))
+		reviewid, _ := strconv.Atoi(c.Param("reviewID"))
 		// reviewerid, _ := strconv.Atoi(c.Query("reviewerID"))
 		reviewerid := int(userId)
 		// fmt.Println(reviewerid, reviewid)

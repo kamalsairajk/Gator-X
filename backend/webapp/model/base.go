@@ -10,7 +10,7 @@ type BaseReview struct {
 	Review      string `form:"Review" json:"review" binding:"required"`
 	Rating      int    `form:"Rating" json:"rating" binding:"required"`
 	PlaceID     int    `form:"PlaceID" json:"placeid" binding:"required"`
-	ReviewerID  int    `form:"ReviewerID" json:"reviewerid" binding:"required"`
+	ReviewerID  int    `form:"ReviewerID" json:"reviewerid"`
 }
 
 type Places struct {
