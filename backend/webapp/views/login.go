@@ -146,3 +146,29 @@ func DeleteUserView(db *gorm.DB) gin.HandlerFunc {
 	}
 	return gin.HandlerFunc(fn)
 }
+
+func GetallusersView(db *gorm.DB) gin.HandlerFunc {
+	fn := func(c *gin.Context) {
+
+		var users []model.Users
+
+		db.Find(&users)
+
+		if len(users) > 0 {
+			c.JSON(http.StatusOK, gin.H{
+				"result": users,
+			})
+			return
+		}
+		if len(users) == 0 {
+			c.JSON(http.StatusOK, gin.H{
+				"message": "currently the database is empty",
+				"result":  users,
+			})
+			return
+		}
+
+	}
+
+	return gin.HandlerFunc(fn)
+}

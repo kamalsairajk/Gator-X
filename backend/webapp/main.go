@@ -24,8 +24,7 @@ func CORSMiddleware() gin.HandlerFunc {
 		c.Next()
 	}
 }
-
-func main() {
+func db_setup(dbname string) *gorm.DB {
 	db, err := gorm.Open(sqlite.Open("main.db"), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
@@ -33,15 +32,19 @@ func main() {
 	db.AutoMigrate(&model.BaseReview{})
 	db.AutoMigrate(&model.Places{})
 	db.AutoMigrate(&model.Users{})
+	return db
+}
 
+func backendserver_setup(db *gorm.DB, cookiestorename string, sessionname string) *gin.Engine {
 	server := gin.Default()
 
 	server.Use(gin.Logger())
-
 	server.Use(gin.Recovery())
-	cookiesstore := cookie.NewStore([]byte("secret"))
+	server.Use(CORSMiddleware())
+
+	cookiesstore := cookie.NewStore([]byte(cookiestorename))
 	cookiesstore.Options(sessions.Options{MaxAge: 60 * 60 * 24})
-	server.Use(sessions.Sessions("newsession", cookiesstore))
+	server.Use(sessions.Sessions(sessionname, cookiesstore))
 
 	server.GET("/getallplaces", view.GetallplacesView(db))
 	server.POST("/postplace", view.PostplaceView(db))
@@ -54,7 +57,13 @@ func main() {
 	server.POST("/logout", view.LogoutView)
 	server.GET("/users/:userID", view.GetUserbyIDView(db))
 	server.DELETE("/users/:userID", view.DeleteUserView(db))
+	server.GET("/getallusers", view.GetallusersView(db))
+	return server
+}
 
+func main() {
+	db := db_setup("main.db")
+	server := backendserver_setup(db, "secret", "newsession")
 	server.Run()
 
 }
