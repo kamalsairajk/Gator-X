@@ -19,7 +19,6 @@ const renderRegisterLoginOrLogout = () => {
     } else {
         return (
             <div style={{display: "flex"}}>
-                <Nav.Link href="/explore">Explore</Nav.Link>
                 <Nav.Link href="/register">Register</Nav.Link>
                 <Nav.Link href="/login">Login</Nav.Link>
             </div>
