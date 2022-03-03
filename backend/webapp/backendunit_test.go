@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -17,7 +18,7 @@ import (
 
 var users []model.Users
 
-// var reviews []model.BaseReview
+var reviews []model.BaseReview
 var places []model.Places
 
 func testdb_setup(dbName string) *gorm.DB {
@@ -81,9 +82,28 @@ func initData(db *gorm.DB) {
 	}
 	db.Create(&places)
 
+	reviews = []model.BaseReview{
+		{
+
+			ReviewTitle: "Good sandwiches",
+			Review:      "The sandwiches are really good.",
+			Rating:      3,
+			PlaceID:     1,
+			ReviewerID:  1,
+		},
+		{
+			ReviewTitle: "Decent subs",
+			Review:      "The subs here are not so good when compared to your usual subway.",
+			Rating:      2,
+			PlaceID:     2,
+			ReviewerID:  2,
+		},
+	}
+	db.Create(&reviews)
+
 }
 
-//get all users
+//get all users pass case
 func testcase1(t *testing.T, router *gin.Engine) {
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/getallusers", nil)
@@ -94,7 +114,7 @@ func testcase1(t *testing.T, router *gin.Engine) {
 	assert.Equal(t, a+string(b)+"}", w.Body.String())
 }
 
-//get all places
+//get all places pass case
 func testcase2(t *testing.T, router *gin.Engine) {
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/getallplaces", nil)
@@ -104,6 +124,115 @@ func testcase2(t *testing.T, router *gin.Engine) {
 	b, _ := json.Marshal(places)
 	assert.Equal(t, a+string(b)+"}", w.Body.String())
 }
+
+// register user pass case
+func testcase3(t *testing.T, router *gin.Engine) {
+	w := httptest.NewRecorder()
+	var jsonData = []byte(`{
+		"name":"testuser4",
+		"email":"terstuser4@gmail.com",
+		"password":"Testuser4@345",
+		"phone":"+1 345 678 9901"
+	}`)
+	req, _ := http.NewRequest("POST", "/register", bytes.NewBuffer(jsonData))
+	router.ServeHTTP(w, req)
+	// var a string = `{"result":`
+	assert.Equal(t, 200, w.Code)
+	expoutput := `{"result":"User created in database"}`
+	assert.Equal(t, expoutput, w.Body.String())
+}
+
+// register user - invalid input - fail case
+func testcase4(t *testing.T, router *gin.Engine) {
+	w := httptest.NewRecorder()
+	var jsonData = []byte(`{
+		"name":"testuser4",
+		"email":"testuser4@gmail.com",
+		"password":"Testuser4@345",
+		"phone":""
+	}`)
+	req, _ := http.NewRequest("POST", "/register", bytes.NewBuffer(jsonData))
+	router.ServeHTTP(w, req)
+	assert.Equal(t, 400, w.Code)
+
+}
+
+//post user review - unauthorized - fail case
+func testcase5(t *testing.T, router *gin.Engine) {
+	w := httptest.NewRecorder()
+	var jsonData = []byte(`{
+		"reviewtitle":"good sandwiches",
+		"review":" The food here is good especially sandwiches",
+		"rating":3,
+		"placeid":1
+	}`)
+	req, _ := http.NewRequest("POST", "/postreview", bytes.NewBuffer(jsonData))
+	router.ServeHTTP(w, req)
+	// var a string = `{"result":`
+	assert.Equal(t, 400, w.Code)
+	expoutput := `{"error":"user not logged in"}`
+	assert.Equal(t, expoutput, w.Body.String())
+}
+
+//edit user review - pass case
+func testcase6(t *testing.T, router *gin.Engine) {
+	w := httptest.NewRecorder()
+	var jsonData1 = []byte(`{
+		"password": "Testuser3@789",
+		"email":    "testuser3@gmail.com"
+
+	}`)
+	req, _ := http.NewRequest("POST", "/login", bytes.NewBuffer(jsonData1))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("credentials", "include")
+	router.ServeHTTP(w, req)
+	cookieValue := w.Result().Header.Get("Set-Cookie")
+	if w.Code == 200 {
+		var jsonData2 = []byte(`{
+			"reviewtitle":"bad sandwiches",
+			"review":" The food here is bad especially sandwiches",
+			"rating":1,
+			"placeid":1
+		}`)
+		w.Flush()
+		req, _ := http.NewRequest("PATCH", "/editreview/1", bytes.NewBuffer(jsonData2))
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("credentials", "include")
+		req.Header.Set("Cookie", cookieValue)
+		router.ServeHTTP(w, req)
+		assert.Equal(t, 200, w.Code)
+		// expoutput := `"result":"Review edited in database"`
+		// assert.Equal(t, expoutput, w.Body.String())
+	}
+
+}
+
+//delete user - pass case
+func testcase7(t *testing.T, router *gin.Engine) {
+	w := httptest.NewRecorder()
+	var jsonData1 = []byte(`{
+		"password": "Testuser3@789",
+		"email":    "testuser3@gmail.com"
+
+	}`)
+	req, _ := http.NewRequest("POST", "/login", bytes.NewBuffer(jsonData1))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("credentials", "include")
+	router.ServeHTTP(w, req)
+	cookieValue := w.Result().Header.Get("Set-Cookie")
+	if w.Code == 200 {
+		w.Flush()
+		req, _ := http.NewRequest("DELETE", "/users/2", nil)
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("credentials", "include")
+		req.Header.Set("Cookie", cookieValue)
+		router.ServeHTTP(w, req)
+		assert.Equal(t, 200, w.Code)
+		// expoutput := `"result":"Review edited in database"`
+		// assert.Equal(t, expoutput, w.Body.String())
+	}
+}
+
 func TestAllcases(t *testing.T) {
 
 	db := testdb_setup("test.db")
@@ -114,4 +243,10 @@ func TestAllcases(t *testing.T) {
 
 	testcase1(t, router)
 	testcase2(t, router)
+	testcase3(t, router)
+	testcase4(t, router)
+	testcase5(t, router)
+	testcase6(t, router)
+	testcase7(t, router)
+
 }
