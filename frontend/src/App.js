@@ -12,12 +12,14 @@ function App(){
   <Router>
     <nav>
       <Link to = "/"> Homepage </Link>
+      <Link to = "/login"> Login </Link>
+      <Link to = "/register"> RegisterComponent </Link>
       <Link to = "/review"> Review </Link>
     </nav>
       <Routes>
       <Route exact path="/" render={() => <HomePage />} />
       <Route exact path="/register" render={() => <RegisterComponent />} />
-      <Route exact path="/login" render={() => <LoginComponent />} />
+      <Route exact path="/login" render={() => <Login/>} />
       </Routes>
   </Router>
   );
