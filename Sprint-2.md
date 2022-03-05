@@ -2,9 +2,13 @@ The detailed description of the activities in the Sprint-2 are recorded below:
 
 Frontend Team(Anviksha Sharma & Sai Siddharth Upadhyayula):
 
-1) The frontend team was able to modify the User Interaction (UI) aspect of the website by integrating the frontend React code with the Golang Backend.
+1) Frontend-Backend Integration:
+The frontend team was able to modify the User Interaction (UI) aspect of the website by integrating the frontend React code with the Golang Backend through the use of Axios library and rendered each function to the backend.
  
-2) The frontend team unit tested the working of various small components of the frontend whcih includes the support, authentication of the user, checking the routing of the responses through fixtures and check the working of the plugins which the website uses to incorporate various small cases to perform a bigger operation and deliver to the user by using Cypress.
+2) Cypress Tests:
+The frontend team unit tested the working of various small components of the frontend which includes the support, authentication of the user, checking the routing of the responses through fixtures and check the working of the plugins which the website uses to incorporate various small cases to perform a bigger operation and deliver to the user by using Cypress.
+
+Cypress Tests: https://github.com/kamalsairajk/Gator-X/tree/main/frontend/cypress
 
 Backend Team(Kamal Sai Raj K & Yuva Roshith Maddipati):
 
