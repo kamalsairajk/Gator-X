@@ -20,4 +20,4 @@ Several unit test cases have been added to check the reliability of the code. Th
 4)	Session Validation layers added to relevant pages/functionalities:
 Parts of the application that require a user to be logged in for access have been added an extra layer of code to verify the current session to check if the user is logged in. For example: Users can view reviews as a guest but login is required if they need to add/edit a review for a certain place.
  
-
+Backend API Doc: https://github.com/kamalsairajk/Gator-X/blob/main/backend/Backend%20API%20Doc.pdf
