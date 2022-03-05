@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -233,6 +234,56 @@ func testcase7(t *testing.T, router *gin.Engine) {
 	}
 }
 
+// create place - pass case
+func testcase8(t *testing.T, router *gin.Engine) {
+	w := httptest.NewRecorder()
+	var jsonData = []byte(`{
+			"placename":"Shake Smart",
+			"location":"Reitz Union, UF",
+			"type":"Beverage",
+			"avgrating":3
+	}`)
+	req, _ := http.NewRequest("POST", "/postplace", bytes.NewBuffer(jsonData))
+	router.ServeHTTP(w, req)
+	// var a string = `{"result":`
+	assert.Equal(t, 200, w.Code)
+	expoutput := `{"result":"Place created in database"}`
+	assert.Equal(t, expoutput, w.Body.String())
+}
+
+//user login - pass case
+func testcase9(t *testing.T, router *gin.Engine) {
+	w := httptest.NewRecorder()
+	var jsonData1 = []byte(`{
+		"password": "Testuser1@123",
+		"email":    "testuser1@gmail.com"
+
+	}`)
+	req, _ := http.NewRequest("POST", "/login", bytes.NewBuffer(jsonData1))
+	router.ServeHTTP(w, req)
+	// var a string = `{"result":`
+	assert.Equal(t, 200, w.Code)
+	expoutput := `{"result":"login success"}`
+	assert.Equal(t, expoutput, w.Body.String())
+}
+
+//user login - fail case
+func testcase10(t *testing.T, router *gin.Engine) {
+	w := httptest.NewRecorder()
+	var jsonData1 = []byte(`{
+		"password": "Testuser2@456",
+		"email":    "wrond@gmail.com"
+
+	}`)
+	req, _ := http.NewRequest("POST", "/login", bytes.NewBuffer(jsonData1))
+	router.ServeHTTP(w, req)
+	// var a string = `{"result":`
+	assert.Equal(t, 401, w.Code)
+	// expoutput := `{"result":"login success"}`
+	fmt.Println(w.Body.String())
+	// assert.Equal(t, expoutput, w.Body.String())
+}
+
 func TestAllcases(t *testing.T) {
 
 	db := testdb_setup("test.db")
@@ -248,5 +299,8 @@ func TestAllcases(t *testing.T) {
 	testcase5(t, router)
 	testcase6(t, router)
 	testcase7(t, router)
+	testcase8(t, router)
+	testcase9(t, router)
+	testcase10(t, router)
 
 }
