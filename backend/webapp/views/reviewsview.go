@@ -149,3 +149,59 @@ func DeletereviewView(db *gorm.DB) gin.HandlerFunc {
 	}
 	return gin.HandlerFunc(fn)
 }
+
+func GetreviewsbyuserView(db *gorm.DB) gin.HandlerFunc {
+	fn := func(c *gin.Context) {
+		session := sessions.Default(c)
+		i := session.Get("userId")
+		if i == nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user not logged in"})
+			return
+		}
+		userId := i.(uint)
+		var user model.Users
+		db.First(&user, "id = ?", userId)
+
+		var userreviews []model.BaseReview
+		result := db.Find(&userreviews, "reviewer_id = ?", user.ID)
+
+		if result.Error != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": result.Error.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"result": userreviews,
+		})
+	}
+	return gin.HandlerFunc(fn)
+
+}
+
+func GetreviewsbyplaceView(db *gorm.DB) gin.HandlerFunc {
+	fn := func(c *gin.Context) {
+		placeID, _ := strconv.Atoi(c.Param("placeID"))
+
+		var place model.Places
+		result := db.First(&place, "id = ?", placeID)
+
+		if result.Error != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": result.Error.Error()})
+			return
+		}
+
+		var placereviews []model.BaseReview
+		result1 := db.Find(&placereviews, "place_id = ?", place.ID)
+
+		if result1.Error != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": result.Error.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"result": placereviews,
+		})
+
+	}
+	return gin.HandlerFunc(fn)
+}
