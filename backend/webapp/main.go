@@ -51,7 +51,7 @@ func backendserver_setup(db *gorm.DB, cookiestorename string, sessionname string
 	server.GET("/getallreviews", view.GetallreviewsView(db))
 	server.POST("/postreview", view.PostreviewView(db))
 	server.PATCH("/editreview/:reviewID", view.EditreviewView(db))
-	server.DELETE("/delete/:reviewID", view.DeletereviewView(db))
+	server.DELETE("/deletereview/:reviewID", view.DeletereviewView(db))
 	server.POST("/register", view.RegisterView(db))
 	server.POST("/login", view.LoginView(db))
 	server.POST("/logout", view.LogoutView)
@@ -60,6 +60,10 @@ func backendserver_setup(db *gorm.DB, cookiestorename string, sessionname string
 	server.GET("/getallusers", view.GetallusersView(db))
 	server.GET("/getuserreviews", view.GetreviewsbyuserView(db))
 	server.GET("/getplacereviews/:placeID", view.GetreviewsbyplaceView(db))
+	server.GET("/getplace/:placeID", view.GetPlacebyIDView(db))
+	server.PATCH("/editplace/:placeID", view.EditplaceView(db))
+	server.DELETE("/deleteplace/:placeID", view.DeleteplaceView(db))
+
 
 
 	return server
