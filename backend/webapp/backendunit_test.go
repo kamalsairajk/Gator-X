@@ -104,7 +104,7 @@ func initData(db *gorm.DB) {
 
 }
 
-//get all users pass case
+//get all users pass case 
 func testcase1(t *testing.T, router *gin.Engine) {
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/getallusers", nil)
@@ -267,7 +267,7 @@ func testcase9(t *testing.T, router *gin.Engine) {
 	assert.Equal(t, expoutput, w.Body.String())
 }
 
-//user login - fail case
+//user login - wrong login information - fail case 
 func testcase10(t *testing.T, router *gin.Engine) {
 	w := httptest.NewRecorder()
 	var jsonData1 = []byte(`{
@@ -281,6 +281,39 @@ func testcase10(t *testing.T, router *gin.Engine) {
 	assert.Equal(t, 401, w.Code)
 	// expoutput := `{"result":"login success"}`
 	fmt.Println(w.Body.String())
+	// assert.Equal(t, expoutput, w.Body.String())
+}
+
+//get place by id -- pass case
+func testcase11(t *testing.T, router *gin.Engine) {
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/getplace/1", nil)
+	router.ServeHTTP(w, req)
+	var a string = `{"result":`
+	assert.Equal(t, 200, w.Code)
+	b, _ := json.Marshal(places[0])
+	assert.Equal(t, a+string(b)+"}", w.Body.String())
+}
+
+//delete place -- pass case
+func testcase12(t *testing.T, router *gin.Engine) {
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("DELETE", "/deleteplace/2", nil)
+	router.ServeHTTP(w, req)
+	assert.Equal(t, 200, w.Code)
+	expoutput := `{"result":"Place deleted from database"}`
+	fmt.Println(w.Body.String())
+	assert.Equal(t, expoutput, w.Body.String())
+}
+
+//edit place --place not exists - fail case 
+func testcase13(t *testing.T, router *gin.Engine) {
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("EDIT", "/editplace/4", nil)
+	router.ServeHTTP(w, req)
+	assert.Equal(t, 404, w.Code)
+	// expoutput := `{"result":"Place deleted from database"}`
+	// fmt.Println(w.Body.String())
 	// assert.Equal(t, expoutput, w.Body.String())
 }
 
@@ -302,5 +335,8 @@ func TestAllcases(t *testing.T) {
 	testcase8(t, router)
 	testcase9(t, router)
 	testcase10(t, router)
+	testcase11(t,router)
+	testcase12(t,router)
+	testcase13(t,router)
 
 }
