@@ -3,6 +3,7 @@ module webapp
 go 1.17
 
 require (
+	github.com/google/uuid v1.3.0
 	github.com/microcosm-cc/bluemonday v1.0.17
 	github.com/stretchr/testify v1.7.0
 	gorm.io/driver/sqlite v1.2.6

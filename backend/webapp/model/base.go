@@ -11,6 +11,7 @@ type BaseReview struct {
 	Rating      int    `form:"Rating" json:"rating"`
 	PlaceID     int    `form:"PlaceID" json:"placeid"`
 	ReviewerID  int    `form:"ReviewerID" json:"reviewerid"`
+	ReviewImage 		string `form:"file" json:"file"`
 }
 
 type Places struct {
@@ -19,4 +20,6 @@ type Places struct {
 	Location  string `form:"Location" json:"location"`
 	Type      string `form:"Type" json:"type"`
 	AvgRating int    `form:"AvgRating" json:"avgrating"`
+	PlaceImage 		string `form:"file" json:"file"`
+
 }
