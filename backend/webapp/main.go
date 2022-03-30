@@ -46,26 +46,26 @@ func backendserver_setup(db *gorm.DB, cookiestorename string, sessionname string
 	cookiesstore.Options(sessions.Options{MaxAge: 60 * 60 * 24})
 	server.Use(sessions.Sessions(sessionname, cookiesstore))
 
-	server.GET("/getallplaces", view.GetallplacesView(db))
-	server.POST("/postplace", view.PostplaceView(db))
-	server.GET("/getallreviews", view.GetallreviewsView(db))
-	server.POST("/postreview", view.PostreviewView(db))
-	server.PATCH("/editreview/:reviewID", view.EditreviewView(db))
-	server.DELETE("/deletereview/:reviewID", view.DeletereviewView(db))
 	server.POST("/register", view.RegisterView(db))
 	server.POST("/login", view.LoginView(db))
 	server.POST("/logout", view.LogoutView)
 	server.GET("/users/:userID", view.GetUserbyIDView(db))
 	server.DELETE("/users/:userID", view.DeleteUserView(db))
-	server.GET("/getallusers", view.GetallusersView(db))
-	server.GET("/getuserreviews", view.GetreviewsbyuserView(db))
-	server.GET("/getplacereviews/:placeID", view.GetreviewsbyplaceView(db))
-	server.GET("/getplace/:placeID", view.GetPlacebyIDView(db))
-	server.PATCH("/editplace/:placeID", view.EditplaceView(db))
-	server.DELETE("/deleteplace/:placeID", view.DeleteplaceView(db))
+	server.GET("/getallusers", view.GetallusersView(db))	
+	
+	server.GET("/getallplaces", view.GetallplacesView(db))
+	server.POST("/postplace", view.PostplaceView(db))
+	server.GET("/getplace/:placeID", view.GetPlacebyIDView(db)) //test case
+	server.PATCH("/editplace/:placeID", view.EditplaceView(db))  //test case
+	server.DELETE("/deleteplace/:placeID", view.DeleteplaceView(db)) //test case
 
-
-
+	server.GET("/getallreviews", view.GetallreviewsView(db))
+	server.POST("/postreview", view.PostreviewView(db))
+	server.PATCH("/editreview/:reviewID", view.EditreviewView(db))
+	server.DELETE("/deletereview/:reviewID", view.DeletereviewView(db))	
+	server.GET("/getuserreviews", view.GetreviewsbyuserView(db))  //test case
+	server.GET("/getplacereviews/:placeID", view.GetreviewsbyplaceView(db)) //test case
+	
 	return server
 }
 
