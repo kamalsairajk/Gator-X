@@ -99,6 +99,13 @@ func initData(db *gorm.DB) {
 			PlaceID:     2,
 			ReviewerID:  2,
 		},
+		{
+			ReviewTitle: "bad shakes",
+			Review:      "The shakes here are not so great.",
+			Rating:      2,
+			PlaceID:     3,
+			ReviewerID:  3,
+		},
 	}
 	db.Create(&reviews)
 
@@ -317,6 +324,44 @@ func testcase13(t *testing.T, router *gin.Engine) {
 	// assert.Equal(t, expoutput, w.Body.String())
 }
 
+//getuserreviews -- pass case
+func testcase14(t *testing.T, router *gin.Engine) {
+	w:= httptest.NewRecorder()
+	var jsonData1 = []byte(`{
+		"password": "Testuser3@789",
+		"email":    "testuser3@gmail.com"
+
+	}`)
+	req, _ := http.NewRequest("POST", "/login", bytes.NewBuffer(jsonData1))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("credentials", "include")
+	router.ServeHTTP(w, req)
+	cookieValue := w.Result().Header.Get("Set-Cookie")
+	if w.Code == 200 {
+		nr:=httptest.NewRecorder()
+		req1, _ := http.NewRequest("GET", "/getuserreviews", nil)
+		// req1.Header.Set("Content-Type", "application/json")
+		req.Header.Set("credentials", "include")
+		req1.Header.Set("Cookie", cookieValue)
+		router.ServeHTTP(nr,req1)
+		assert.Equal(t, 200, nr.Code)
+		var a string = `{"result":[`
+		b, _ := json.Marshal(reviews[2])
+		assert.Equal(t, a+string(b)+"]}", nr.Body.String())
+
+	}
+}
+//getplacereviews - pass case 
+func testcase15(t *testing.T, router *gin.Engine) {
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/getplacereviews/1", nil)
+	router.ServeHTTP(w, req)
+	assert.Equal(t, 200, w.Code)
+	var a string = `{"result":[`
+	b, _ := json.Marshal(reviews[0])
+	assert.Equal(t, a+string(b)+"]}", w.Body.String())
+}
+
 func TestAllcases(t *testing.T) {
 
 	db := testdb_setup("test.db")
@@ -338,5 +383,7 @@ func TestAllcases(t *testing.T) {
 	testcase11(t,router)
 	testcase12(t,router)
 	testcase13(t,router)
+	testcase14(t,router)
+	testcase15(t,router)
 
 }
