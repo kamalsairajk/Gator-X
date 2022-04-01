@@ -4,7 +4,11 @@ describe('Post creation', function () {
         cy.visit('https://localhost:9000/')
     })
     
+    it("should enable the user create the post", funtion (){
+        cy.get('#add-new-review').click()
+    })
+
     it("should enable the user create the post", funtion () {
-        cy.get('#create').click()
+        cy.get('#edit').click()
     })
 })
