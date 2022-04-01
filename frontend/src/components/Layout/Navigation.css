@@ -1,0 +1,17 @@
+.sidebar_item {    
+    display: block;
+   	width: 150px;
+   	height: 30px;   	
+   	margin-top: 20px;   
+}
+ 
+nav ul  {
+	position: relative;
+	display: block;
+}
+ 
+h1{
+	 padding-left: 300px;
+	 text-decoration: none;
+	 color: white;
+}
