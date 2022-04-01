@@ -1,14 +1,20 @@
 {
-  "name": "frontend",
+  "name": "example2",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.2",
-    "@testing-library/react": "^12.1.2",
+    "@material-ui/core": "^4.12.3",
+    "@testing-library/jest-dom": "^5.16.3",
+    "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "5.0.0",
+    "axios": "^0.26.1",
+    "moment": "^2.29.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-render-html": "^0.6.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.4",
+    "sweetalert2": "^11.4.8",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
