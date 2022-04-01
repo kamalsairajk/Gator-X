@@ -8,4 +8,4 @@ In addition to the existing features, we have added create and delete post featu
 
 The user can even add pictuers to the reviews he created.
 
-https://github.com/kamalsairajk/Gator-X/issues/23#issue-1189113484
+<img width="1440" alt="Screen Shot 2022-03-31 at 9 43 44 PM" src="https://user-images.githubusercontent.com/46457398/161180412-b177a61a-cd97-441a-b201-0ab7b090d299.png">
