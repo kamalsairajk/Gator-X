@@ -5,6 +5,6 @@ describe('Post creation', function () {
     })
     
     it("should enable the user create the post", funtion () {
-        cy.get().click()
+        cy.get('#delete').click()
     })
 })
