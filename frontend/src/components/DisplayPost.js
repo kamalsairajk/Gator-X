@@ -54,7 +54,6 @@ export default function PostDetailComponent(props) {
         })
     }
 
-
     const renderPost = () => {
         if (editMode) {
             return null
@@ -151,6 +150,8 @@ export default function PostDetailComponent(props) {
         <div>
             {renderPost()}
             {renderEditPostForm()}
+            {renderPostButtons()}
+            {getPost()}
         </div>
     )
 }
