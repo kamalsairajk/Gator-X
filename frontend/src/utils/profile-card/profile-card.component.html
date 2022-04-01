@@ -1,0 +1,18 @@
+<mat-card class="example-card">
+  <mat-card-header class="header">
+    <mat-card-title>User Profile</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list role="list">
+      <mat-list-item class="user-details" role="listitem" *ngFor="let detail of userDetails">
+        <div class="title">{{detail[0] | titlecase}}</div>
+        <ng-container *ngIf="detail[0] == 'website'; else elseBlock">
+          <a class="detail" [href]="link" target="_blank">{{detail[1]}}</a>
+        </ng-container>
+        <ng-template #elseBlock>
+          <div class="detail">{{detail[1]}}</div>
+        </ng-template>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

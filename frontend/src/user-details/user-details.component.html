@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="posts-albums">
+    <mat-accordion class="posts">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Places
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-user-posts [userId]="userId"></app-user-posts>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="albums">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Albums
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-user-albums [userId]="userId"></app-user-albums>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <div class="profile">
+    <app-profile-card *ngIf="user" [user]="user"></app-profile-card>
+  </div>
+</div>

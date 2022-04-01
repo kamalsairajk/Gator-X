@@ -1,0 +1,5 @@
+<div *ngIf="comments$ | async">
+  <ng-container *ngFor="let comment of comments">
+    <app-comment-card class="comment" [comment]="comment"></app-comment-card>
+  </ng-container>
+</div>

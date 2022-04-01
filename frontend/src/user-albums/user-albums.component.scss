@@ -1,0 +1,17 @@
+.albums-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+  overflow: 'auto'
+}
+
+.albums {
+  margin: 10px;
+}
+
+.albums-panel {
+  width: 100%;
+  height: 100%;
+  overflow: 'auto'
+}

@@ -1,0 +1,14 @@
+<div *ngIf="albums$ | async" class="albums-list">
+  <div class="albums" *ngFor="let album of albums">
+    <mat-accordion class="albums-panel">
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div class="album c-pointer">{{album.title}}</div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-user-photos [albumId]="album.id"></app-user-photos>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>

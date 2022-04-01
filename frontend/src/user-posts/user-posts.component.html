@@ -1,0 +1,53 @@
+
+<form class="post-form">
+  <mat-form-field class="post-full-width">
+  <span matPrefix> </span>
+  <input type="text" matInput placeholder="Search" name= "search" [(ngModel)]= "search">
+  <button matSuffix mat-button><mat-icon >search</mat-icon></button>
+  </mat-form-field>
+  {{search}}
+</form>
+
+<form class="post-form">
+  <mat-form-field class="post-full-width">
+    <span matPrefix> </span>
+    <input type="text" matInput placeholder="Add post title" name= "newPost" [(ngModel)]= "title">
+  </mat-form-field>
+  <mat-form-field class="post-full-width">
+    <span matPrefix> </span>
+    <input type="text" matInput placeholder="Add post body" name= "newPost" [(ngModel)]= "body">
+  </mat-form-field>
+  <button matSuffix mat-button (click)="postComment(title, body)">Post</button>
+</form>
+
+<div class="posts" *ngFor="let post of posts | filter: search">
+  <mat-accordion class="posts-panel">
+    <mat-expansion-panel hideToggle (opened)="post.opened = true" (closed)="post.opened = false">
+      <mat-expansion-panel-header class="post-header">
+        <mat-panel-title class="post">
+          <div class="content">
+            <ng-container *ngIf="!post.edit; else editBlock">
+              <div class="post-title c-pointer">{{post.title}}</div>
+              <div *ngIf="post.opened" class="post-body">{{post.body}}</div>
+            </ng-container>
+            <ng-template #editBlock>
+              <mat-form-field class="post-full-width">
+                <span matPrefix> </span>
+                <input type="text" matInput placeholder="Update post title" name= "editPost" [(ngModel)]= "post.title">
+              </mat-form-field>
+              <mat-form-field class="post-full-width">
+                <span matPrefix> </span>
+                <input type="text" matInput placeholder="Update post body" name= "editPost" [(ngModel)]= "post.body">
+              </mat-form-field>
+            </ng-template>
+          </div>
+          <div class="actions">
+            <button class="c-pointer" (click)="updatePost(post, post.opened, $event)">Update</button>
+            <button class="c-pointer" (click)="deletePost(post.id, $event)">Delete</button>
+          </div>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-post-comments [postId]="post.id"></app-post-comments>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

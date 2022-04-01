@@ -1,0 +1,11 @@
+<div class="container">
+  <h1 class="title">GatorX</h1>
+  <h2 class="title">Users</h2>
+  <mat-list role="list" class="users">
+    <mat-list-item role="listitem" class="user" *ngFor="let user of users">
+      <div class="left"></div>
+      <div class="username c-pointer" matTooltipClass="tooltip" [matTooltipPosition]="'after'" [matTooltip]='getToolTipInfo(user)' (click)="navigate(user)">{{user.name}}</div>
+      <div class="right"></div>
+    </mat-list-item>
+  </mat-list>
+</div>

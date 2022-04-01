@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.posts-albums {
+  height: max-content;
+  margin: 10px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.posts {
+  margin: 0px 10px 10px 10px;
+}
+
+.albums {
+  margin: 10px;
+}
+
+.profile {
+  margin: 10px;
+  min-width: 25%;
+}
