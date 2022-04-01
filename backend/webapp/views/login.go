@@ -70,13 +70,6 @@ func LoginView(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 		//password checking - first email and then password
-		if len(user) == 0 {
-			c.JSON(http.StatusOK, gin.H{
-				"message": "currently the database is empty",
-				"result":  user,
-			})
-			return
-		}
 
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": "Invalid username and password",
