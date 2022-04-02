@@ -1,4 +1,9 @@
-Frontend:
+Frontend Team:
+
+Anviksha Sharma 
+Sai Siddharth Upadhyayula
+
+
 
 Updates:
 
@@ -32,13 +37,15 @@ The pictures below show the added features and the cypress tests:
 
 ![d1ed621d-b3f1-4328-a3fa-66e5837310cb](https://user-images.githubusercontent.com/46457398/161358478-9a919bd3-82cf-4f6f-969f-64fd97427457.jpg)
 
-6) Cypress Tests for the added features
+6) Update the review
  
 ![7c3cc465-b3fd-40e2-adf5-735e0ebddc86](https://user-images.githubusercontent.com/46457398/161358811-04b929ef-5dbe-4ba6-a568-22dbade3ba33.jpg)
 
-
+7) Succesful Updation
+ 
 ![a6fe384c-024a-4093-aa08-a4d7257619a2](https://user-images.githubusercontent.com/46457398/161358843-5da0775c-95f2-4783-ba9e-63df06176359.jpg)
 
 
-5) Cypress tests
+8) Cypress Tests for the added features
+
 ![Unknown-3](https://user-images.githubusercontent.com/46457398/161357943-776523a6-aaad-4987-b6ba-7460164905c2.png)
