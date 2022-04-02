@@ -50,3 +50,49 @@ The pictures below show the added features and the cypress tests:
 8) Cypress Tests for the added features
 
 ![Unknown-3](https://user-images.githubusercontent.com/46457398/161357943-776523a6-aaad-4987-b6ba-7460164905c2.png)
+
+
+Backend Team:
+
+1) Kamal Sai Raj K
+ 
+2) Yuva Roshit Maddipati
+
+
+
+Backend Updates:
+
+The following additional views have been added:
+1. GetPlacebyIDView
+2. EditplaceView
+3. DeleteplaceView
+4. GetreviewsbyuserView
+5. GetreviewsbyplaceView
+
+1) GetPlacebyIDView:
+•	Logged in users can retrieve a place corresponding to an ID. The API receives a GET request with the place id of the corresponding place.
+•	Place details like location, name, etc could be viewed.
+![image](https://user-images.githubusercontent.com/38933993/161362920-6ab90ea6-a201-49c8-a1a7-deb40a25b81e.png)
+
+2) EditplaceView
+•	Logged in users can edit the place details corresponding to a place ID. The API receives a PATCH request with the place id of the corresponding place.
+•	A patch request with a format similar to the create place request gets sent as a json file with changes made to whichever fields the user desires.
+•	All the previously created places in the database can be edited.
+![image](https://user-images.githubusercontent.com/38933993/161362950-be31adab-f8c2-4673-a9db-eda4b23400cf.png)
+
+3) DeleteplaceView
+•	Logged in users can delete an existing place from the database corresponding to a place ID. The API receives a DELETE request with the place id of the corresponding place.
+•	Any of the previously created places in the database can be deleted by appending the place id to the APIs url.
+![image](https://user-images.githubusercontent.com/38933993/161362964-85f785f5-a7db-49d3-a8c6-7bb020095924.png)
+
+4) GetreviewsbyuserView
+•	Logged in users can retrieve all reviews for all places. The API receives a GET request and send all the reviews data stored in the database
+•	Review details like location, name, place name, title and rating could be viewed.
+•	All the previously posted reviews in the database can be viewed.
+![image](https://user-images.githubusercontent.com/38933993/161362980-9e532d8c-58e9-496f-88eb-03a41f810822.png)
+
+5) GetreviewsbyplaceView
+•	Logged in users can retrieve all reviews for a particular place corresponding to an ID. The API receives a GET request along with the place id and sends all the reviews data stored in the database for that specific place.
+•	Review details like location, name, place name, title and rating could be viewed.
+•	All the previously posted reviews for the corresponding place id in the database can be viewed.
+![image](https://user-images.githubusercontent.com/38933993/161362993-0934c467-e4f7-43d8-b989-f94e510a2534.png)
