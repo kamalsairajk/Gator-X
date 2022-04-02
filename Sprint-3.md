@@ -1,11 +1,12 @@
 Frontend Team:
 
-Anviksha Sharma 
-Sai Siddharth Upadhyayula
+1) Anviksha Sharma 
+ 
+2) Sai Siddharth Upadhyayula
 
 
 
-Updates:
+Frontend Updates:
 
 In addition to the existing features, we have added features which include:
 
