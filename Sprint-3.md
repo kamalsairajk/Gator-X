@@ -62,12 +62,12 @@ Backend Team:
 
 Backend Updates:
 
-The following additional views have been added:
-1. GetPlacebyIDView
-2. EditplaceView
-3. DeleteplaceView
-4. GetreviewsbyuserView
-5. GetreviewsbyplaceView
+1.	Completion of CRUD Api for place: Functions such as deletion of a place and editing of information of a place have been added. An admin layer is being added where the foundation of the layer has been laid but should be completed by the next sprint and this is expected to take care of usability of these functions as users can be encouraged to create places but checking, editing and removal can be made to handle by the admin. 
+2.	Features such as getting reviews for a particular place, user have been added and tested. So a user can check their reviews created by them and also reviews among the total reviews can be viewed particular to a place. And another feature that calculates the average rating based on all reviews for a particular has been added. This is calculated when a review is created.
+3.	Tests: To ensure the code's reliability, several unit test cases have been included. Many cases were included in last sprint like user related functions, place related functions and also the review related ones. In this sprint, unit test cases have been written for the new functions that are added 
+4.	Another feature such as image addition has been temporarily tested which will be finished by the next sprint and many function which will require these functions will be incorporated.
+
+Some views that have been added are as follows:
 
 1) GetPlacebyIDView:
 •	Logged in users can retrieve a place corresponding to an ID. The API receives a GET request with the place id of the corresponding place.
