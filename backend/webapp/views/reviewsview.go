@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-
+	"math"
 	model "webapp/model"
 
 	"github.com/gin-contrib/sessions"
@@ -68,6 +68,23 @@ func PostreviewView(db *gorm.DB) gin.HandlerFunc {
 		json.ReviewerID = int(user.ID)
 		result := db.Create(&json)
 
+		// feature - calculating average review for a place
+		var placereviews []model.BaseReview
+		db.Find(&placereviews, "place_id = ?", json.PlaceID)
+		var avgrating =float64(0.0)
+		for i := 0; i < len(placereviews); i++ {
+			avgrating+=float64(placereviews[i].Rating)
+		}
+		avgrating=avgrating/float64(len(placereviews))
+		avgrating=math.Round(avgrating*100)/100
+		var uplace model.Places
+		result1 := db.Model(&uplace).Where("id = ?", json.PlaceID).Update("avg_rating",avgrating)
+
+		if result1.Error != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": result1.Error.Error()})
+			return
+		}
+		// 
 		if result.Error != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": result.Error.Error()})
 			return
