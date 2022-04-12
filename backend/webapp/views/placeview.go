@@ -10,6 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/microcosm-cc/bluemonday"
 	"gorm.io/gorm"
+	"github.com/gin-contrib/sessions"
+
 )
 
 func GetallplacesView(db *gorm.DB) gin.HandlerFunc {
@@ -60,6 +62,19 @@ func PostplaceView(db *gorm.DB) gin.HandlerFunc {
 		
 		// data,err:=c.GetPostForm("data")
 
+		session := sessions.Default(c)
+		i := session.Get("userId")
+		if i == nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user not logged in"})
+			return
+		}
+		userId := i.(uint)
+		var user model.Users
+		db.First(&user, "id = ?", userId)
+		if user.Type != model.ADMIN{
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not admin user"})
+			return
+		}
 		var json model.Places
 		if err := c.ShouldBindJSON(&json); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -115,6 +130,21 @@ func GetPlacebyIDView(db *gorm.DB) gin.HandlerFunc {
 
 func DeleteplaceView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
+
+		session := sessions.Default(c)
+		i := session.Get("userId")
+		if i == nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user not logged in"})
+			return
+		}
+		userId := i.(uint)
+		var user model.Users
+		db.First(&user, "id = ?", userId)
+		if user.Type != model.ADMIN{
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not admin user"})
+			return
+		}
+
 		placeid, _ := strconv.Atoi(c.Param("placeID"))
 
 		var place model.Places
@@ -140,6 +170,19 @@ func DeleteplaceView(db *gorm.DB) gin.HandlerFunc {
 
 func EditplaceView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
+		session := sessions.Default(c)
+		i := session.Get("userId")
+		if i == nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user not logged in"})
+			return
+		}
+		userId := i.(uint)
+		var user model.Users
+		db.First(&user, "id = ?", userId)
+		if user.Type != model.ADMIN{
+			c.JSON(http.StatusBadRequest, gin.H{"error": "not admin user"})
+			return
+		}
 		placeid, _ := strconv.Atoi(c.Param("placeID"))
 
 		var place model.Places

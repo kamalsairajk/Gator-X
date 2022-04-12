@@ -25,6 +25,7 @@ func RegisterView(db *gorm.DB) gin.HandlerFunc {
 		json.Email = p.Sanitize(json.Email)
 		json.Phone = p.Sanitize(json.Phone)
 		json.Password = p.Sanitize(json.Password)
+		json.Type=model.NORMAL
 
 		var user model.Users
 		db.Find(&user, "email = ?", json.Email)
@@ -165,3 +166,41 @@ func GetallusersView(db *gorm.DB) gin.HandlerFunc {
 
 	return gin.HandlerFunc(fn)
 }
+
+
+
+func RegisterAdminView(db *gorm.DB) gin.HandlerFunc {
+	fn := func(c *gin.Context) {
+		var json model.Users
+		if err := c.ShouldBindJSON(&json); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		p := bluemonday.StripTagsPolicy()
+		json.Name = p.Sanitize(json.Name)
+		json.Email = p.Sanitize(json.Email)
+		json.Phone = p.Sanitize(json.Phone)
+		json.Password = p.Sanitize(json.Password)
+		json.Type=model.ADMIN
+
+		var user model.Users
+		db.Find(&user, "email = ?", json.Email)
+		if user != (model.Users{}) {
+			c.JSON(http.StatusConflict, gin.H{"error": "User Already Exists!"})
+			return
+		}
+		result := db.Create(&json)
+
+		if result.Error != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": result.Error.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"result": "User created in database",
+		})
+	}
+	return gin.HandlerFunc(fn)
+
+}
+
