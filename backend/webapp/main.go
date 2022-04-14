@@ -52,11 +52,11 @@ func backendserver_setup(db *gorm.DB, cookiestorename string, sessionname string
 	server.GET("/users/:userID", view.GetUserbyIDView(db))
 	server.DELETE("/deleteuser/:userID", view.DeleteUserView(db))
 	server.GET("/getallusers", view.GetallusersView(db))	
-	server.POST("/registeradmin",view.RegisterAdminView(db))
+	server.POST("/registeradmin",view.RegisterAdminView(db))  // test case
 	
 	server.GET("/getallplaces", view.GetallplacesView(db))
-	server.POST("/postplace", view.PostplaceView(db))
-	server.GET("/getplace/:placeID", view.GetPlacebyIDView(db)) //test case
+	server.POST("/postplace", view.PostplaceView(db)) //test case
+	server.GET("/getplace/:placeID", view.GetPlacebyIDView(db)) 
 	server.PATCH("/editplace/:placeID", view.EditplaceView(db))  //test case
 	server.DELETE("/deleteplace/:placeID", view.DeleteplaceView(db)) //test case
 
@@ -64,8 +64,8 @@ func backendserver_setup(db *gorm.DB, cookiestorename string, sessionname string
 	server.POST("/postreview", view.PostreviewView(db))
 	server.PATCH("/editreview/:reviewID", view.EditreviewView(db))
 	server.DELETE("/deletereview/:reviewID", view.DeletereviewView(db))	
-	server.GET("/getuserreviews", view.GetreviewsbyuserView(db))  //test case
-	server.GET("/getplacereviews/:placeID", view.GetreviewsbyplaceView(db)) //test case
+	server.GET("/getuserreviews", view.GetreviewsbyuserView(db))  
+	server.GET("/getplacereviews/:placeID", view.GetreviewsbyplaceView(db)) 
 	
 	return server
 }

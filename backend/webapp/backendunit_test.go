@@ -45,18 +45,28 @@ func initData(db *gorm.DB) {
 			Password: "Testuser1@123",
 			Email:    "testuser1@gmail.com",
 			Phone:    "+1 122 455 7990",
+			Type: model.NORMAL,
 		},
 		{
 			Name:     "testuser2",
 			Password: "Testuser2@456",
 			Email:    "testuser2@gmail.com",
 			Phone:    "+1 344 122 8777",
+			Type: model.NORMAL,
 		},
 		{
 			Name:     "testuser3",
 			Password: "Testuser3@789",
 			Email:    "testuser3@gmail.com",
 			Phone:    "+1 222 333 4477",
+			Type: model.NORMAL,
+		},
+		{
+			Name:     "adminuser1",
+			Password: "Adminuser1@334",
+			Email:    "adminuser1@gmail.com",
+			Phone:    "+1 332 444 6699",
+			Type: model.ADMIN,
 		},
 	}
 	db.Create(&users)
@@ -243,19 +253,38 @@ func testcase7(t *testing.T, router *gin.Engine) {
 
 // create place - pass case
 func testcase8(t *testing.T, router *gin.Engine) {
-	w := httptest.NewRecorder()
-	var jsonData = []byte(`{
-			"placename":"Shake Smart",
-			"location":"Reitz Union, UF",
-			"type":"Beverage",
-			"avgrating":3
+	w:= httptest.NewRecorder()
+	var jsonData1 = []byte(`{
+		"password": "Adminuser1@334",
+		"email":    "adminuser1@gmail.com"
+
 	}`)
-	req, _ := http.NewRequest("POST", "/postplace", bytes.NewBuffer(jsonData))
+	req, _ := http.NewRequest("POST", "/login", bytes.NewBuffer(jsonData1))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("credentials", "include")
 	router.ServeHTTP(w, req)
-	// var a string = `{"result":`
-	assert.Equal(t, 200, w.Code)
-	expoutput := `{"result":"Place created in database"}`
-	assert.Equal(t, expoutput, w.Body.String())
+	cookieValue := w.Result().Header.Get("Set-Cookie")
+	if w.Code == 200 {
+		nr:=httptest.NewRecorder()
+		var jsonData = []byte(`{
+				"placename":"Shake Smart",
+				"location":"Reitz Union, UF",
+				"type":"Beverage",
+				"avgrating":3
+		}`)
+		req1, _ := http.NewRequest("POST", "/postplace", bytes.NewBuffer(jsonData))
+		req.Header.Set("credentials", "include")
+		req1.Header.Set("Cookie", cookieValue)
+		router.ServeHTTP(nr,req1)
+		// var a string = `{"result":`
+		assert.Equal(t, 200, nr.Code)
+		expoutput := `{"result":"Place created in database"}`
+		assert.Equal(t, expoutput, nr.Body.String())
+
+	}
+	
+	
+
 }
 
 //user login - pass case
@@ -304,24 +333,59 @@ func testcase11(t *testing.T, router *gin.Engine) {
 
 //delete place -- pass case
 func testcase12(t *testing.T, router *gin.Engine) {
-	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("DELETE", "/deleteplace/2", nil)
+	
+	w:= httptest.NewRecorder()
+	var jsonData1 = []byte(`{
+		"password": "Adminuser1@334",
+		"email":    "adminuser1@gmail.com"
+
+	}`)
+	req, _ := http.NewRequest("POST", "/login", bytes.NewBuffer(jsonData1))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("credentials", "include")
 	router.ServeHTTP(w, req)
-	assert.Equal(t, 200, w.Code)
-	expoutput := `{"result":"Place deleted from database"}`
-	fmt.Println(w.Body.String())
-	assert.Equal(t, expoutput, w.Body.String())
+	cookieValue := w.Result().Header.Get("Set-Cookie")
+	if w.Code == 200 {
+		nr := httptest.NewRecorder()
+		req1, _ := http.NewRequest("DELETE", "/deleteplace/2", nil)
+		req.Header.Set("credentials", "include")
+		req1.Header.Set("Cookie", cookieValue)
+		router.ServeHTTP(nr, req1)
+		assert.Equal(t, 200, nr.Code)
+		expoutput := `{"result":"Place deleted from database"}`
+		fmt.Println(nr.Body.String())
+		assert.Equal(t, expoutput, nr.Body.String())
+
+	}
+
 }
 
 //edit place --place not exists - fail case 
 func testcase13(t *testing.T, router *gin.Engine) {
-	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("EDIT", "/editplace/4", nil)
+
+	w:= httptest.NewRecorder()
+	var jsonData1 = []byte(`{
+		"password": "Adminuser1@334",
+		"email":    "adminuser1@gmail.com"
+
+	}`)
+	req, _ := http.NewRequest("POST", "/login", bytes.NewBuffer(jsonData1))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("credentials", "include")
 	router.ServeHTTP(w, req)
-	assert.Equal(t, 404, w.Code)
-	// expoutput := `{"result":"Place deleted from database"}`
-	// fmt.Println(w.Body.String())
-	// assert.Equal(t, expoutput, w.Body.String())
+	cookieValue := w.Result().Header.Get("Set-Cookie")
+	if w.Code == 200 {
+		nr := httptest.NewRecorder()
+		req1, _ := http.NewRequest("EDIT", "/editplace/4", nil)
+		req.Header.Set("credentials", "include")
+		req1.Header.Set("Cookie", cookieValue)
+		router.ServeHTTP(nr, req1)
+		assert.Equal(t, 404, nr.Code)
+		// expoutput := `{"result":"Place deleted from database"}`
+		// fmt.Println(nr.Body.String())
+		// assert.Equal(t, expoutput, nr.Body.String())
+
+	}
 }
 
 //getuserreviews -- pass case
@@ -362,6 +426,22 @@ func testcase15(t *testing.T, router *gin.Engine) {
 	assert.Equal(t, a+string(b)+"]}", w.Body.String())
 }
 
+//registeradmin - pass case
+func testcase16(t *testing.T, router *gin.Engine){
+	w := httptest.NewRecorder()
+	var jsonData = []byte(`{
+		"name":"adminuser2",
+		"email":"adminuser2@gmail.com",
+		"password":"Adminuser2@345",
+		"phone":"1234567890"
+	}`)
+	req, _ := http.NewRequest("POST", "/register", bytes.NewBuffer(jsonData))
+	router.ServeHTTP(w, req)
+	assert.Equal(t, 200, w.Code)
+}
+
+
+
 func TestAllcases(t *testing.T) {
 
 	db := testdb_setup("test.db")
@@ -385,5 +465,6 @@ func TestAllcases(t *testing.T) {
 	testcase13(t,router)
 	testcase14(t,router)
 	testcase15(t,router)
+	testcase16(t,router)
 
 }
