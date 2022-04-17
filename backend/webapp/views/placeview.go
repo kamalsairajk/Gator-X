@@ -52,7 +52,7 @@ func PostplaceView(db *gorm.DB) gin.HandlerFunc {
 			// return
 			extension := filepath.Ext(file.Filename)
 			newFileName := uuid.New().String() + extension
-			newFilepath="C:/Users/kamal/Documents/SE project/Gator-X/backend/webapp/images/placeimages" + newFileName
+			newFilepath="C:/Users/kamal/Documents/SE project/Gator-X/backend/webapp/images/placeimages/" + newFileName
 			if err := c.SaveUploadedFile(file, newFilepath); err != nil {
 				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 					"message": "Unable to save the file",
@@ -157,13 +157,20 @@ func DeleteplaceView(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		placeid, _ := strconv.Atoi(c.Param("placeID"))
-
+		fmt.Println(placeid)
 		var place model.Places
 		result1:=db.Find(&place, "id = ?", placeid)
+		
+		if (place==model.Places{}){
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Place id does not exist"})
+			return
+		}
+
 		if result1.Error != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": result1.Error.Error()})
 			return
 		}
+		fmt.Println(place)
 		if place.PlaceImage!=""{
 			e := os.Remove(place.PlaceImage)
 			if e != nil {
@@ -203,16 +210,22 @@ func EditplaceView(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 		placeid, _ := strconv.Atoi(c.Param("placeID"))
-		
+		fmt.Println(placeid)
 		var place1 model.Places
 		result1 := db.Find(&place1, "id = ?", placeid)
+
+		if (place1==model.Places{}){
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Place id does not exist"})
+			return
+		}
 
 		if result1.Error != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": result1.Error.Error()})
 			return
 		}
-		fmt.Println(result1)
+		fmt.Print(result1)
 		if place1.PlaceImage!=""{
+			fmt.Println(place1.PlaceImage)
 			e := os.Remove(place1.PlaceImage)
 			if e != nil {
 				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
@@ -229,7 +242,7 @@ func EditplaceView(db *gorm.DB) gin.HandlerFunc {
 			// return
 			extension := filepath.Ext(file.Filename)
 			newFileName := uuid.New().String() + extension
-			newFilepath="C:/Users/kamal/Documents/SE project/Gator-X/backend/webapp/images/placeimages" + newFileName
+			newFilepath="C:/Users/kamal/Documents/SE project/Gator-X/backend/webapp/images/placeimages/" + newFileName
 			if err := c.SaveUploadedFile(file, newFilepath); err != nil {
 				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 					"message": "Unable to save the file",
