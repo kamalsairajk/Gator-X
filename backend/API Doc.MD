@@ -22,4 +22,14 @@ Sample Requests and Responses:
 ![image](https://user-images.githubusercontent.com/38933993/163862284-5f819808-3189-43fc-b5ba-0c8350378ad3.png)
 ![image](https://user-images.githubusercontent.com/38933993/163862304-33e669b8-bafc-4eda-8bc5-979d03c10cbe.png)
 
+API for Viewing/Adding places:
+Description:
+•	This API sends a get request whenever the user wishes to view all the places available to review.
+•	A post request is sent whenever the user wishes to add a new place to the database. The following are the required parameters for sending a post request to add a new place: placename, location, type, avgrating.
+Acceptance Criteria:
+•	The API should throw an error message whenever any of the above mentioned required parameters aren’t specified.
+•	Whenever a get request is sent the API should send a response with the list of places along with the values of all the other place parameters.
+Sample Requests and Responses:
+![image](https://user-images.githubusercontent.com/38933993/163862518-ac209298-2c44-498e-896d-5fed39dad9dc.png)
+![image](https://user-images.githubusercontent.com/38933993/163862535-1f949a81-c555-4e07-bf2a-a0a72ed7ae05.png)
 
