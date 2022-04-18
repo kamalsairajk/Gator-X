@@ -91,6 +91,18 @@ Acceptance Criteria:
 •	Whenever a get request is sent, the API should send back an appropriate acknowledgement message with all the review details.
 ![image](https://user-images.githubusercontent.com/38933993/163863354-bf1c867a-fc42-427b-b4bd-01700e9bb539.png)
 
+GetreviewsbyplaceView:
+Description:
+•	Logged in users can retrieve all reviews for a particular place corresponding to an ID. The API receives a GET request along with the place id and sends all the reviews data stored in the database for that specific place.
+•	Review details like location, name, place name, title and rating could be viewed.
+•	All the previously posted reviews for the corresponding place id in the database can be viewed.
+
+
+Acceptance Criteria:
+•	Whenever the user is not logged in and tries to edit a place, the API should throw an error message saying: “User not logged in”
+•	The API should send a relevant error message when the place id appended to the URL is not valid.
+•	Whenever a get request is sent, the API should send back an appropriate acknowledgement message with all the review details.
+![image](https://user-images.githubusercontent.com/38933993/163863447-26d82807-6c69-4c56-a3ac-b75bee926587.png)
 
 
 
