@@ -21,3 +21,5 @@ Acceptance Criteria:
 Sample Requests and Responses:
 ![image](https://user-images.githubusercontent.com/38933993/163862284-5f819808-3189-43fc-b5ba-0c8350378ad3.png)
 ![image](https://user-images.githubusercontent.com/38933993/163862304-33e669b8-bafc-4eda-8bc5-979d03c10cbe.png)
+
+
