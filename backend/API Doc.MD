@@ -33,3 +33,22 @@ Sample Requests and Responses:
 ![image](https://user-images.githubusercontent.com/38933993/163862518-ac209298-2c44-498e-896d-5fed39dad9dc.png)
 ![image](https://user-images.githubusercontent.com/38933993/163862535-1f949a81-c555-4e07-bf2a-a0a72ed7ae05.png)
 
+API for Viewing, Posting or Editing reviews:
+Description:
+•	Logged in users can add a review to a corresponding place. The API receives a POST request with the place id of the corresponding place.
+•	Reviews from other users for all the places can be viewed
+•	Previously posted reviews can be edited.
+Acceptance Criteria:
+•	Whenever the user is not logged in and tries to write a review, the API should throw an error message saying: “User not logged in”
+•	The API should throw an error message when any of the following required fields are not filled, when trying to post a review: reviewtitle, review, rating, placeid, reviewerid
+•	The review id should be included in the URL when trying to edit an old review.
+•	Whenever a get request is sent, the API should send data having all the previously posted reviews that are stored on the database.
+•	When a delete review request is sent to the API along with the review id, the API should remove the corresponding review from the database.
+
+Sample Requests and Responses:
+![image](https://user-images.githubusercontent.com/38933993/163862699-1c2b9460-aed5-4e20-a51e-ed49d976ab17.png)
+![image](https://user-images.githubusercontent.com/38933993/163862720-7275fba5-a6eb-42d9-adb0-ebe9e8073861.png)
+
+
+
+
