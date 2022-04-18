@@ -71,6 +71,16 @@ Acceptance Criteria:
 •	Whenever a patch request is sent, the API should send back an appropriate acknowledgement message.
 ![image](https://user-images.githubusercontent.com/38933993/163863186-71ca5bbf-a085-4c20-97c2-25924017ed27.png)
 
+DeleteplaceView:
+Description:
+•	Logged in users can delete an existing place from the database corresponding to a place ID. The API receives a DELETE request with the place id of the corresponding place.
+•	Any of the previously created places in the database can be deleted by appending the place id to the APIs url.
+Acceptance Criteria:
+•	The API should throw an error message when the place id in the url is not valid.
+•	The place id should be included in the URL when trying to delete a previously created place.
+•	Whenever a delete request is sent, the API should send back an appropriate acknowledgement message.
+![image](https://user-images.githubusercontent.com/38933993/163863281-3c0901f2-c091-4fad-9b07-48b041b31c69.png)
+
 
 
 
