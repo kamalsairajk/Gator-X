@@ -11,6 +11,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/microcosm-cc/bluemonday"
 	"gorm.io/gorm"
+	"path/filepath"
+	"github.com/google/uuid"
+	"encoding/json"
+	"os"
+
 )
 
 func GetallreviewsView(db *gorm.DB) gin.HandlerFunc {
@@ -51,26 +56,48 @@ func PostreviewView(db *gorm.DB) gin.HandlerFunc {
 		var user model.Users
 		db.First(&user, "id = ?", userId)
 
-		var json model.BaseReview
-		if err := c.ShouldBindJSON(&json); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		file, err := c.FormFile("file")
+		newFilepath:=""
+		if err == nil {
+			extension := filepath.Ext(file.Filename)
+			newFileName := uuid.New().String() + extension
+			newFilepath="C:/Users/kamal/Documents/SE project/Gator-X/backend/webapp/images/reviewimages/" + newFileName
+			if err := c.SaveUploadedFile(file, newFilepath); err != nil {
+				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+					"message": "Unable to save the file",
+				})
+			return
+			}
+		} else{
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+				"message": "No file is received",
+			})
 			return
 		}
+		data,_:=c.GetPostForm("data")
+
+		var json1 model.BaseReview
+		json.Unmarshal([]byte(data), &json1)
+		// if err := c.ShouldBindJSON(&json); err != nil {
+		// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		// 	return
+		// }
 
 		p := bluemonday.StripTagsPolicy()
 
-		json.ReviewTitle = p.Sanitize(json.ReviewTitle)
-		json.Review = p.Sanitize(json.Review)
-		json.Rating, _ = strconv.Atoi(p.Sanitize(strconv.Itoa(json.Rating)))
+		json1.ReviewTitle = p.Sanitize(json1.ReviewTitle)
+		json1.Review = p.Sanitize(json1.Review)
+		json1.Rating, _ = strconv.Atoi(p.Sanitize(strconv.Itoa(json1.Rating)))
 
-		json.PlaceID, _ = strconv.Atoi(p.Sanitize(strconv.Itoa(json.PlaceID)))
+		json1.PlaceID, _ = strconv.Atoi(p.Sanitize(strconv.Itoa(json1.PlaceID)))
 		// json.ReviewerID, _ = strconv.Atoi(p.Sanitize(strconv.Itoa(json.ReviewerID)))
-		json.ReviewerID = int(user.ID)
-		result := db.Create(&json)
+		json1.ReviewerID = int(user.ID)
+		json1.ReviewImage=newFilepath
+		result := db.Create(&json1)
 
 		// feature - calculating average review for a place
 		var placereviews []model.BaseReview
-		db.Find(&placereviews, "place_id = ?", json.PlaceID)
+		db.Find(&placereviews, "place_id = ?", json1.PlaceID)
 		var avgrating =float64(0.0)
 		for i := 0; i < len(placereviews); i++ {
 			avgrating+=float64(placereviews[i].Rating)
@@ -78,7 +105,7 @@ func PostreviewView(db *gorm.DB) gin.HandlerFunc {
 		avgrating=avgrating/float64(len(placereviews))
 		avgrating=math.Round(avgrating*100)/100
 		var uplace model.Places
-		result1 := db.Model(&uplace).Where("id = ?", json.PlaceID).Update("avg_rating",avgrating)
+		result1 := db.Model(&uplace).Where("id = ?", json1.PlaceID).Update("avg_rating",avgrating)
 
 		if result1.Error != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": result1.Error.Error()})
@@ -152,7 +179,26 @@ func DeletereviewView(db *gorm.DB) gin.HandlerFunc {
 		// fmt.Println(reviewerid, reviewid)
 
 		var breview model.BaseReview
-		db.Find(&breview, "id = ? AND reviewer_id = ?", reviewid, reviewerid)
+		result1:=db.Find(&breview, "id = ? AND reviewer_id = ?", reviewid, reviewerid)
+		if (breview==model.BaseReview{}){
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Review does not exist"})
+			return
+		}
+
+		if result1.Error != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": result1.Error.Error()})
+			return
+		}
+		// fmt.Println(place)
+		if breview.ReviewImage!=""{
+			e := os.Remove(breview.ReviewImage)
+			if e != nil {
+				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+					"message": "Unable to delete the file",
+				})
+				return 
+			}
+		}
 		result := db.Delete(&breview)
 
 		if result.Error != nil {
