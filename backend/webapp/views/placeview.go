@@ -1,7 +1,7 @@
 package views
 
 import (
-	"fmt"
+	// "fmt"
 	"net/http"
 	"strconv"
 	"path/filepath"
@@ -43,27 +43,6 @@ func GetallplacesView(db *gorm.DB) gin.HandlerFunc {
 func PostplaceView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 
-		file, err := c.FormFile("file")
-		newFilepath:=""
-		if err == nil {
-			// c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			// 	"message": "No file is received",
-			// })
-			// return
-			extension := filepath.Ext(file.Filename)
-			newFileName := uuid.New().String() + extension
-			newFilepath="C:/Users/kamal/Documents/SE project/Gator-X/backend/webapp/images/placeimages/" + newFileName
-			if err := c.SaveUploadedFile(file, newFilepath); err != nil {
-				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
-					"message": "Unable to save the file",
-				})
-			return
-			}
-		}
-
-		data,_:=c.GetPostForm("data")
-		// fmt.Println(data)
-		// fmt.Printf("%T\n",data)
 
 		session := sessions.Default(c)
 		i := session.Get("userId")
@@ -78,6 +57,28 @@ func PostplaceView(db *gorm.DB) gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "not admin user"})
 			return
 		}
+
+		file, err := c.FormFile("file")
+		newFilepath:=""
+		if err == nil {
+			extension := filepath.Ext(file.Filename)
+			newFileName := uuid.New().String() + extension
+			newFilepath="C:/Users/kamal/Documents/SE project/Gator-X/backend/webapp/images/placeimages/" + newFileName
+			if err := c.SaveUploadedFile(file, newFilepath); err != nil {
+				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+					"message": "Unable to save the file",
+				})
+			return
+			}
+		} else{
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+				"message": "No file is received",
+			})
+			return
+		}
+
+		data,_:=c.GetPostForm("data")
+
 		var json1 model.Places
 		json.Unmarshal([]byte(data), &json1)
 		// if err:=json.Unmarshal([]byte(data), &json1);err!=nil{
@@ -85,18 +86,11 @@ func PostplaceView(db *gorm.DB) gin.HandlerFunc {
 		//  	return
 		// }
 
-		// if err := c.ShouldBindJSON(&json); err != nil {
-		// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		// 	return
-		// }
-
 		p := bluemonday.StripTagsPolicy()
 		json1.Placename = p.Sanitize(json1.Placename)
 		json1.Location = p.Sanitize(json1.Location)
 		json1.Type = p.Sanitize(json1.Type)
 		json1.AvgRating, _ = strconv.Atoi(p.Sanitize(strconv.Itoa(json1.AvgRating)))
-		fmt.Println(newFilepath)
-
 		json1.PlaceImage=newFilepath
 
 		var place model.Places
@@ -157,7 +151,7 @@ func DeleteplaceView(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		placeid, _ := strconv.Atoi(c.Param("placeID"))
-		fmt.Println(placeid)
+		// fmt.Println(placeid)
 		var place model.Places
 		result1:=db.Find(&place, "id = ?", placeid)
 		
@@ -170,13 +164,14 @@ func DeleteplaceView(db *gorm.DB) gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": result1.Error.Error()})
 			return
 		}
-		fmt.Println(place)
+		// fmt.Println(place)
 		if place.PlaceImage!=""{
 			e := os.Remove(place.PlaceImage)
 			if e != nil {
 				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 					"message": "Unable to delete the file",
 				})
+				return 
 			}
 		}
 		result := db.Delete(&place)
@@ -210,7 +205,7 @@ func EditplaceView(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 		placeid, _ := strconv.Atoi(c.Param("placeID"))
-		fmt.Println(placeid)
+		// fmt.Println(placeid)
 		var place1 model.Places
 		result1 := db.Find(&place1, "id = ?", placeid)
 
@@ -223,23 +218,20 @@ func EditplaceView(db *gorm.DB) gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": result1.Error.Error()})
 			return
 		}
-		fmt.Print(result1)
+		// fmt.Print(result1)
 		if place1.PlaceImage!=""{
-			fmt.Println(place1.PlaceImage)
+			// fmt.Println(place1.PlaceImage)
 			e := os.Remove(place1.PlaceImage)
 			if e != nil {
 				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 					"message": "Unable to delete the file",
 				})
+				return
 			}
 		}
 		file, err := c.FormFile("file")
 		newFilepath:=""
 		if err == nil {
-			// c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			// 	"message": "No file is received",
-			// })
-			// return
 			extension := filepath.Ext(file.Filename)
 			newFileName := uuid.New().String() + extension
 			newFilepath="C:/Users/kamal/Documents/SE project/Gator-X/backend/webapp/images/placeimages/" + newFileName
@@ -249,18 +241,17 @@ func EditplaceView(db *gorm.DB) gin.HandlerFunc {
 				})
 			return
 			}
+		} else{
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+				"message": "No file is received",
+			})
+			return
 		}
 		data,_:=c.GetPostForm("data")
 
 		var place model.Places
 		json.Unmarshal([]byte(data), &place)
 
-
-		// var place model.Places
-		// if err := c.ShouldBindJSON(&place); err != nil {
-		// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		// 	return
-		// }
 		var uplace model.Places
 		result := db.Model(&uplace).Where("id = ?", placeid).Updates(&place)
 

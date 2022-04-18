@@ -15,6 +15,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+
+	"mime/multipart"
+	"io"
+	"strings"
+	"os"
 )
 
 var users []model.Users
@@ -77,6 +82,7 @@ func initData(db *gorm.DB) {
 			Location:  "The Hub, UF",
 			Type:      "Food",
 			AvgRating: 3,
+			PlaceImage:"C:/Users/kamal/Documents/SE project/Gator-X/backend/webapp/images/placeimages/b9d9d480-9966-473a-b63b-ede95250418f.jpg",
 		},
 		{
 			Placename: "Subway",
@@ -266,13 +272,35 @@ func testcase8(t *testing.T, router *gin.Engine) {
 	cookieValue := w.Result().Header.Get("Set-Cookie")
 	if w.Code == 200 {
 		nr:=httptest.NewRecorder()
-		var jsonData = []byte(`{
-				"placename":"Shake Smart",
-				"location":"Reitz Union, UF",
-				"type":"Beverage",
-				"avgrating":3
-		}`)
-		req1, _ := http.NewRequest("POST", "/postplace", bytes.NewBuffer(jsonData))
+		body := &bytes.Buffer{}
+    	writer := multipart.NewWriter(body)
+		fw, err := writer.CreateFormField("data")
+    	if err != nil {
+    	}
+		_, err = io.Copy(fw, strings.NewReader(`{
+			"placename":"Shake Smart",
+			"location":"Reitz Union, UF",
+			"type":"Beverage",
+			"avgrating":3
+		}`))
+    	if err != nil {
+       		panic(err)
+    	}
+		fw, err = writer.CreateFormFile("file", "images/unittestimages/IMG_8902-e1533921181975.jpg")
+		if err != nil {
+		}
+		file, err := os.Open("images/unittestimages/IMG_8902-e1533921181975.jpg")
+		if err != nil {
+			panic(err)
+		}
+		_, err = io.Copy(fw, file)
+		if err != nil {
+			panic(err)
+		}
+		writer.Close()
+		
+		req1, _ := http.NewRequest("POST", "/postplace", bytes.NewReader(body.Bytes()))
+		req1.Header.Set("Content-Type", writer.FormDataContentType())
 		req.Header.Set("credentials", "include")
 		req1.Header.Set("Cookie", cookieValue)
 		router.ServeHTTP(nr,req1)
@@ -358,7 +386,7 @@ func testcase12(t *testing.T, router *gin.Engine) {
 
 	}
 
-}
+ }
 
 //edit place --place not exists - fail case 
 func testcase13(t *testing.T, router *gin.Engine) {
@@ -440,6 +468,60 @@ func testcase16(t *testing.T, router *gin.Engine){
 	assert.Equal(t, 200, w.Code)
 }
 
+// edit place - changing images and some details- pass case
+func testcase17(t *testing.T, router *gin.Engine) {
+	w:= httptest.NewRecorder()
+	var jsonData1 = []byte(`{
+		"password": "Adminuser1@334",
+		"email":    "adminuser1@gmail.com"
+
+	}`)
+	req, _ := http.NewRequest("POST", "/login", bytes.NewBuffer(jsonData1))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("credentials", "include")
+	router.ServeHTTP(w, req)
+	cookieValue := w.Result().Header.Get("Set-Cookie")
+	if w.Code == 200 {
+		nr:=httptest.NewRecorder()
+		body := &bytes.Buffer{}
+    	writer := multipart.NewWriter(body)
+		fw, err := writer.CreateFormField("data")
+    	if err != nil {
+    	}
+		_, err = io.Copy(fw, strings.NewReader(`{
+			"type":"Eatery specializes in chicken sandwiches",
+		}`))
+    	if err != nil {
+       		panic(err)
+    	}
+		fw, err = writer.CreateFormFile("file", "images/unittestimages/2web.jpg")
+		if err != nil {
+		}
+		file, err := os.Open("images/unittestimages/2web.jpg")
+		if err != nil {
+			panic(err)
+		}
+		_, err = io.Copy(fw, file)
+		if err != nil {
+			panic(err)
+		}
+		writer.Close()
+		
+		req1, _ := http.NewRequest("PATCH", "/editplace/1", bytes.NewReader(body.Bytes()))
+		req1.Header.Set("Content-Type", writer.FormDataContentType())
+		req.Header.Set("credentials", "include")
+		req1.Header.Set("Cookie", cookieValue)
+		router.ServeHTTP(nr,req1)
+		// var a string = `{"result":`
+		assert.Equal(t, 200, nr.Code)
+		expoutput := `{"result":"Place edited in database"}`
+		assert.Equal(t, expoutput, nr.Body.String())
+
+	}
+	
+	
+
+}
 
 
 func TestAllcases(t *testing.T) {
@@ -466,5 +548,5 @@ func TestAllcases(t *testing.T) {
 	testcase14(t,router)
 	testcase15(t,router)
 	testcase16(t,router)
-
+	testcase17(t,router)
 }
