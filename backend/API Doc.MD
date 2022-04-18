@@ -49,6 +49,16 @@ Sample Requests and Responses:
 ![image](https://user-images.githubusercontent.com/38933993/163862699-1c2b9460-aed5-4e20-a51e-ed49d976ab17.png)
 ![image](https://user-images.githubusercontent.com/38933993/163862720-7275fba5-a6eb-42d9-adb0-ebe9e8073861.png)
 
+Sprint 3:
+GetPlaceByIdView:
+Description:
+•	Logged in users can retrieve a place corresponding to an ID. The API receives a GET request with the place id of the corresponding place.
+•	Place details like location, name, etc could be viewed.
+Acceptance Criteria:
+•	The place id should be included in the URL when trying to get the place details.
+•	Whenever a get request is sent, the API should send data having all the place details from the database.
+![image](https://user-images.githubusercontent.com/38933993/163862840-17944e3b-e9a2-43c7-8a07-edca911aa14c.png)
+
 
 
 
