@@ -81,6 +81,16 @@ Acceptance Criteria:
 •	Whenever a delete request is sent, the API should send back an appropriate acknowledgement message.
 ![image](https://user-images.githubusercontent.com/38933993/163863281-3c0901f2-c091-4fad-9b07-48b041b31c69.png)
 
+GetreviewsbyuserView:
+Description:
+•	Logged in users can retrieve all reviews for all places. The API receives a GET request and send all the reviews data stored in the database
+•	Review details like location, name, place name, title and rating could be viewed.
+•	All the previously posted reviews in the database can be viewed.
+Acceptance Criteria:
+•	Whenever the user is not logged in and tries to edit a place, the API should throw an error message saying: “User not logged in”
+•	Whenever a get request is sent, the API should send back an appropriate acknowledgement message with all the review details.
+![image](https://user-images.githubusercontent.com/38933993/163863354-bf1c867a-fc42-427b-b4bd-01700e9bb539.png)
+
 
 
 
