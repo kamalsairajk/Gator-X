@@ -59,6 +59,18 @@ Acceptance Criteria:
 •	Whenever a get request is sent, the API should send data having all the place details from the database.
 ![image](https://user-images.githubusercontent.com/38933993/163862840-17944e3b-e9a2-43c7-8a07-edca911aa14c.png)
 
+EditplaceView:
+Description:
+•	Logged in users can edit the place details corresponding to a place ID. The API receives a PATCH request with the place id of the corresponding place.
+•	A patch request with a format similar to the create place request gets sent as a json file with changes made to whichever fields the user desires.
+•	All the previously created places in the database can be edited.
+Acceptance Criteria:
+•	Whenever the user is not logged in and tries to edit a place, the API should throw an error message saying: “User not logged in”
+•	The API should throw an error message when any of the following required fields are not filled, when trying to edit a place: placename, location, type, avgrating.
+•	The place id should be included in the URL when trying to edit a previously created place.
+•	Whenever a patch request is sent, the API should send back an appropriate acknowledgement message.
+![image](https://user-images.githubusercontent.com/38933993/163863186-71ca5bbf-a085-4c20-97c2-25924017ed27.png)
+
 
 
 
