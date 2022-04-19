@@ -53,6 +53,8 @@ class Form extends Component {
                     <option value="sport">Sports</option>
                 </select>
                 </div>
+                <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg"></input>
+                <div id="display-image"></div>
                 <button type="submit" className="btn btn-primary">Create</button>
             </form>
          );
