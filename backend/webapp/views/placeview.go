@@ -70,12 +70,7 @@ func PostplaceView(db *gorm.DB) gin.HandlerFunc {
 				})
 			return
 			}
-		} else{
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-				"message": "No file is received",
-			})
-			return
-		}
+		} 
 
 		data,_:=c.GetPostForm("data")
 
@@ -242,12 +237,7 @@ func EditplaceView(db *gorm.DB) gin.HandlerFunc {
 				})
 			return
 			}
-		} else{
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-				"message": "No file is received",
-			})
-			return
-		}
+		} 
 		data,_:=c.GetPostForm("data")
 
 		var place model.Places

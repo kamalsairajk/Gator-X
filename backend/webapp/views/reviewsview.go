@@ -14,6 +14,7 @@ import (
 	"github.com/google/uuid"
 	"encoding/json"
 	"os"
+	"fmt"
 
 )
 
@@ -67,11 +68,6 @@ func PostreviewView(db *gorm.DB) gin.HandlerFunc {
 				})
 			return
 			}
-		} else{
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-				"message": "No file is received",
-			})
-			return
 		}
 		data,_:=c.GetPostForm("data")
 
@@ -102,7 +98,8 @@ func PostreviewView(db *gorm.DB) gin.HandlerFunc {
 			avgrating+=float64(placereviews[i].Rating)
 		}
 		avgrating=avgrating/float64(len(placereviews))
-		avgrating=math.Round(avgrating*100)/100
+		avgrating=math.Round(avgrating)
+		// fmt.Println(avgrating)
 		var uplace model.Places
 		result1 := db.Model(&uplace).Where("id = ?", json1.PlaceID).Update("avg_rating",avgrating)
 
@@ -173,19 +170,34 @@ func EditreviewView(db *gorm.DB) gin.HandlerFunc {
 				})
 			return
 			}
-		} else{
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-				"message": "No file is received",
-			})
-			return
-		}
+		} 
 		data,_:=c.GetPostForm("data")
 		
 		var json1 model.BaseReview
 		json.Unmarshal([]byte(data), &json1)
-
 		result := db.Model(&breview).Where("id = ? AND reviewer_id = ?", reviewid, reviewerid).Updates(&json1)
 
+		fmt.Println(json1.Rating)
+		fmt.Println(breview.PlaceID)
+		if json1.Rating!=0 && breview.PlaceID!=0{
+			var placereviews []model.BaseReview
+			db.Find(&placereviews, "place_id = ?", breview.PlaceID)
+			var avgrating =float64(0.0)
+			for i := 0; i < len(placereviews); i++ {
+				avgrating+=float64(placereviews[i].Rating)
+			}
+			fmt.Println(avgrating)
+			avgrating=avgrating/float64(len(placereviews))
+			avgrating=math.Round(avgrating)
+			var uplace model.Places
+			result1 := db.Model(&uplace).Where("id = ?", breview.PlaceID).Update("avg_rating",avgrating)
+
+			if result1.Error != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"error": result1.Error.Error()})
+				return
+			}
+			// 
+		}
 		if result.Error != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": result.Error.Error()})
 			return
