@@ -219,7 +219,10 @@ func EditplaceView(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 		// fmt.Print(result1)
-		if place1.PlaceImage!=""{
+		
+		file, err := c.FormFile("file")
+		newFilepath:=""
+		if place1.PlaceImage!="" && err==nil{
 			// fmt.Println(place1.PlaceImage)
 			e := os.Remove(place1.PlaceImage)
 			if e != nil {
@@ -229,8 +232,6 @@ func EditplaceView(db *gorm.DB) gin.HandlerFunc {
 				return
 			}
 		}
-		file, err := c.FormFile("file")
-		newFilepath:=""
 		if err == nil {
 			extension := filepath.Ext(file.Filename)
 			newFileName := uuid.New().String() + extension

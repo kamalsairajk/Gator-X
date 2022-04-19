@@ -1,7 +1,6 @@
 package views
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"math"
@@ -136,19 +135,56 @@ func EditreviewView(db *gorm.DB) gin.HandlerFunc {
 		var user model.Users
 		db.First(&user, "id = ?", userId)
 
-		var json model.BaseReview
-		if err := c.ShouldBindJSON(&json); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-		fmt.Println(json)
-
 		reviewid, _ := strconv.Atoi(c.Param("reviewID"))
 		// reviewerid, _ := strconv.Atoi(c.Query("reviewerID"))
 		reviewerid := int(user.ID)
-
 		var breview model.BaseReview
-		result := db.Model(&breview).Where("id = ? AND reviewer_id = ?", reviewid, reviewerid).Updates(&json)
+
+		result1:=db.Find(&breview, "id = ? AND reviewer_id = ?", reviewid, reviewerid)
+		if (breview==model.BaseReview{}){
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Review does not exist"})
+			return
+		}
+
+		if result1.Error != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": result1.Error.Error()})
+			return
+		}
+		// fmt.Println(place)
+
+		file, err := c.FormFile("file")
+		newFilepath:=""
+		if breview.ReviewImage!="" && err==nil{
+			e := os.Remove(breview.ReviewImage)
+			if e != nil {
+				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+					"message": "Unable to delete the file",
+				})
+				return 
+			}
+		}
+		if err == nil {
+			extension := filepath.Ext(file.Filename)
+			newFileName := uuid.New().String() + extension
+			newFilepath="C:/Users/kamal/Documents/SE project/Gator-X/backend/webapp/images/reviewimages/" + newFileName
+			if err := c.SaveUploadedFile(file, newFilepath); err != nil {
+				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+					"message": "Unable to save the file",
+				})
+			return
+			}
+		} else{
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+				"message": "No file is received",
+			})
+			return
+		}
+		data,_:=c.GetPostForm("data")
+		
+		var json1 model.BaseReview
+		json.Unmarshal([]byte(data), &json1)
+
+		result := db.Model(&breview).Where("id = ? AND reviewer_id = ?", reviewid, reviewerid).Updates(&json1)
 
 		if result.Error != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": result.Error.Error()})
