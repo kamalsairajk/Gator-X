@@ -52,13 +52,13 @@ func backendserver_setup(db *gorm.DB, cookiestorename string, sessionname string
 	server.GET("/users/:userID", view.GetUserbyIDView(db))
 	server.DELETE("/deleteuser/:userID", view.DeleteUserView(db))
 	server.GET("/getallusers", view.GetallusersView(db))	
-	server.POST("/registeradmin",view.RegisterAdminView(db))  // test case
+	server.POST("/registeradmin",view.RegisterAdminView(db))  
 	
 	server.GET("/getallplaces", view.GetallplacesView(db))
-	server.POST("/postplace", view.PostplaceView(db)) //test case
+	server.POST("/postplace", view.PostplaceView(db)) 
 	server.GET("/getplace/:placeID", view.GetPlacebyIDView(db)) 
-	server.PATCH("/editplace/:placeID", view.EditplaceView(db))  //test case
-	server.DELETE("/deleteplace/:placeID", view.DeleteplaceView(db)) //test case
+	server.PATCH("/editplace/:placeID", view.EditplaceView(db))  
+	server.DELETE("/deleteplace/:placeID", view.DeleteplaceView(db)) 
 
 	server.GET("/getallreviews", view.GetallreviewsView(db))
 	server.POST("/postreview", view.PostreviewView(db))
