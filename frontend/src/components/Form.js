@@ -46,11 +46,26 @@ class Form extends Component {
                 <div className="form-group">
                     <label>Category</label>
                 <select ref={this.categoryRef} className="form-control">
+                    <option value="adventure">Adventure</option>
+                    <option value="airport">Airport</option>
+                    <option value="bar">Bar</option>
                     <option value="cafe">Cafe</option>
-                    <option value="nature">Nature</option>
+                    <option value="club">Club</option>
+                    <option value="Downtown">Downtown</option>
+                    <option value="lake">Lake</option>
+                    <option value="library">Library</option>
+                    <option value="mall">Mall</option>
+                    <option value="midtown">Midtown</option>
                     <option value="museum">Museum</option>
-                    <option value="books">Books</option>
+                    <option value="nature">Nature</option>
+                    <option value="park">Park</option>
+                    <option value="planetarium">Planetarium</option>
+                    <option value="restaurant">Restaurant</option> 
+                    <option value="santafevent">Santa Fe event</option>
                     <option value="sport">Sports</option>
+                    <option value="theatre">Theatre</option>
+                    <option value="ufevent">UF event</option>
+                    <option value="zoo">Zoo</option>
                 </select>
                 </div>
                 <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg"></input>
