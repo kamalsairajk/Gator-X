@@ -73,7 +73,7 @@ class Form extends Component {
                 
                 <div className="form-group">
                     <label>Rating/5:</label>
-                    <input type="text" ref={this.authorRef} className="form-control" placeholder="Enter your Rating from 1 to 5" />
+                    <input type="text" ref={this.authorRef} className="form-control" placeholder="Enter Rating 1-5" />
                 </div>
 
                 <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg"></input>
