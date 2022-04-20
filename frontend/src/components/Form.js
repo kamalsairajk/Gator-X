@@ -52,10 +52,12 @@ class Form extends Component {
                     <option value="cafe">Cafe</option>
                     <option value="club">Club</option>
                     <option value="Downtown">Downtown</option>
+                    <option value="hotel">Hotel</option>
                     <option value="lake">Lake</option>
                     <option value="library">Library</option>
                     <option value="mall">Mall</option>
                     <option value="midtown">Midtown</option>
+                    <option value="motel">Motel</option>
                     <option value="museum">Museum</option>
                     <option value="nature">Nature</option>
                     <option value="park">Park</option>
@@ -68,6 +70,12 @@ class Form extends Component {
                     <option value="zoo">Zoo</option>
                 </select>
                 </div>
+                
+                <div className="form-group">
+                    <label>Rating/5:</label>
+                    <input type="text" ref={this.authorRef} className="form-control" placeholder="Enter your Rating from 1 to 5" />
+                </div>
+
                 <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg"></input>
                 <div id="display-image"></div>
                 <button type="submit" className="btn btn-primary">Create</button>
