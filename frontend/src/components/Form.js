@@ -45,7 +45,7 @@ class Form extends Component {
  
                 <div className="form-group">
                     <label>Category</label>
-                <select ref={this.categoryRef} className="form-control">
+                <select ref={this.categoryRef} className="form-control" id="category">
                     <option value="adventure">Adventure</option>
                     <option value="airport">Airport</option>
                     <option value="bar">Bar</option>
@@ -73,7 +73,7 @@ class Form extends Component {
                 
                 <div className="form-group">
                     <label>Rating</label>
-                <select ref={this.categoryRef} className="form-control">
+                <select ref={this.categoryRef} className="form-control" id="rate">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>

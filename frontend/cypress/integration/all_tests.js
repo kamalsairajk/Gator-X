@@ -11,8 +11,17 @@ describe('Create Review', function () {
         cy.get('.form-control1').type('fake title').should('have.value', 'fake title')
         //cy.contains('Choose')
         //cy.get('input[type=file]').selectFile('cypress/fixtures/file.json')
+        cy.contains('Category')
+        cy.get('#category').select('Cafe')
+        // confirm the selected value
+        cy.get('#category').should('have.value', 'Cafe')
+
+        cy.contains('Rating')
+        cy.get('#rate').select('2')
+        // confirm the selected value
+        cy.get('#rate').should('have.value', '2')
         cy.contains('Create').click()
-        cy.contains('Review').click() //test for the rating functionality 
+        
     })
     
 })
@@ -72,8 +81,10 @@ describe('Display single review', function(){
 
 describe('Searches reviews', function(){
     it("successfully displays posts containing keyword", function(){
+        cy.visit('localhost:3000')
         //cy.contains('Search').click().type('chipotle')
         cy.get('.searchbar').type('chipotle')
 
     })
 })
+
