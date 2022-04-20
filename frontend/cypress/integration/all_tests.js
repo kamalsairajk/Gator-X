@@ -12,6 +12,7 @@ describe('Create Review', function () {
         //cy.contains('Choose')
         //cy.get('input[type=file]').selectFile('cypress/fixtures/file.json')
         cy.contains('Create').click()
+        cy.contains('Review').click() //test for the rating functionality 
     })
     
 })
@@ -76,4 +77,3 @@ describe('Searches reviews', function(){
 
     })
 })
-

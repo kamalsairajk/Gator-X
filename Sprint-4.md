@@ -16,7 +16,7 @@ Gator-X was designed with the intention of elaborately expressing one's views so
 * Added Upload image feature to reviews: The user will now be able to add images in addition to the text, category of the place and the author name which is can show the other users the real condition of a place versus the advertised pictures which will help users in making the right choice to pick a place.
 * Added SearchBar component to navbar: The user will now be able to search to find exactly what the user wants instead of browsing which will save the time for the user.
 * Added Ratings feature: The user will now be able to add rating to a review in the range of 1-5 which showcases the degree of the experience a user had at a place which correlates to the overall experience of a user including hospitality, customer service and the place offering.
-* End-to-end testing using cypress: All the new features added to the frontend have been end-to-end tested and the tests can be found at https://github.com/kamalsairajk/Gator-X/tree/main/frontend/cypress 
+* End-to-end testing using cypress: All the new features added to the frontend have been end-to-end tested and the tests can be found at [Tests] (https://github.com/kamalsairajk/Gator-X/tree/main/frontend/cypress)
 
 ### 2. Backend:
 
