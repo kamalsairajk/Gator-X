@@ -1,5 +1,9 @@
 package main
 
+
+// imports model,views,Gin and Gorm
+
+
 import (
 	model "webapp/model"
 	view "webapp/views"
@@ -10,6 +14,8 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
+
+// middleware to set headers 
 
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -24,6 +30,12 @@ func CORSMiddleware() gin.HandlerFunc {
 		c.Next()
 	}
 }
+
+/*
+	Setup the database in order to connect the database with default configuration, if failed return a panic with message failed to connect database
+	and setup all tables
+
+*/
 func db_setup(dbname string) *gorm.DB {
 	db, err := gorm.Open(sqlite.Open("main.db"), &gorm.Config{})
 	if err != nil {
@@ -34,6 +46,10 @@ func db_setup(dbname string) *gorm.DB {
 	db.AutoMigrate(&model.Users{})
 	return db
 }
+/*
+	Setup the webserver with default configuration and pass through the CORS middleware to check every request. Logger added to the middleware and recovery to use the 
+	default recovery mechanism to counter any unexpected crashes in web server. And endpoints that server as an API for the frontend.
+*/
 
 func backendserver_setup(db *gorm.DB, cookiestorename string, sessionname string) *gin.Engine {
 	server := gin.Default()
@@ -69,7 +85,7 @@ func backendserver_setup(db *gorm.DB, cookiestorename string, sessionname string
 	
 	return server
 }
-
+// function that starts up the server and the database.
 func main() {
 	db := db_setup("main.db")
 	server := backendserver_setup(db, "secret", "newsession")

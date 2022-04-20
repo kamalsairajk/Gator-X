@@ -5,12 +5,13 @@ import (
 )
 
 type UserType int
-
+// different users
 const (
 	NORMAL   UserType = iota
 	ADMIN             //status =1
 )
 
+// User table
 type Users struct {
 	gorm.Model
 	Name     string `form:"name" json:"name" binding:"required"`
@@ -21,6 +22,7 @@ type Users struct {
 
 }
 
+// Login struct
 type Login struct {
 	Email    string `form:"email" json:"email" binding:"required"`
 	Password string `form:"password" json:"password" binding:"required"`

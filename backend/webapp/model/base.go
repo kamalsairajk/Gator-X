@@ -3,7 +3,7 @@ package model
 import (
 	"gorm.io/gorm"
 )
-
+//base review table, mapped to json variables
 type BaseReview struct {
 	gorm.Model
 	ReviewTitle string `form:"ReviewTitle" json:"reviewtitle"`
@@ -14,6 +14,7 @@ type BaseReview struct {
 	ReviewImage 		string `form:"file" json:"file"`
 }
 
+//places table, mapped to json variables
 type Places struct {
 	gorm.Model
 	Placename string `form:"Placename" json:"placename"`

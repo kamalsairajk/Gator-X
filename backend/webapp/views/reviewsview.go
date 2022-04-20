@@ -18,6 +18,13 @@ import (
 
 )
 
+
+
+/*
+	GetallreviewsView - return all reviews, using an array of base review model to store the results, find the database, and if the length of this array is greater than
+	0 return the results and if length of results is 0 then return a message that the table is currently empty.
+*/
+
 func GetallreviewsView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 
@@ -43,6 +50,15 @@ func GetallreviewsView(db *gorm.DB) gin.HandlerFunc {
 
 	return gin.HandlerFunc(fn)
 }
+
+
+/*
+	PostreviewView - create a review for a place with given details, using the current session if user logged in if not then user should login and only logged in users have
+	can create a review, all review related details are added into a json object under the form field data and image related to the review is added
+	into the file field of the form data, after performing some data processing the data is stored into the database. After storing since the average rating for this place
+	might change we calculate this again and update this in the places table. And finally we return a message saying that review is created or else we return 
+	the error. 
+*/
 
 func PostreviewView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
@@ -119,6 +135,14 @@ func PostreviewView(db *gorm.DB) gin.HandlerFunc {
 	}
 	return gin.HandlerFunc(fn)
 }
+
+/*
+	EditreviewView - edit a review with given constraints or fields using the review id, using the current session if user logged in if not then user should login and only logged in users have
+	can edit an existing review. Taking the review id as a parameter to edit and find the review in the database, if the review is not present then return a status bad request
+	else if finding the review returns an error then return the error message, if found then update the record in the database with the given details and if file is present 
+	delete existing review image in the server and save the current file in the server and change this in the database along with other details. Also if the rating is present then, change the rating
+	and calculate and update the average rating in the places table. Finally return an message that says the review is edited else the error.
+*/
 
 func EditreviewView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
@@ -210,6 +234,14 @@ func EditreviewView(db *gorm.DB) gin.HandlerFunc {
 	return gin.HandlerFunc(fn)
 }
 
+/*
+	DeletereviewView - deletes the review from the database, using the current session if user logged in if not then user should login and only logged in users have
+	can delete a place. Taking the reviewID to find the review in the database. if there isn't such review then return review
+	doesn't exist or any issue in finding the review return the error with a status bad request, if not then first remove the image file if exists from the server and then delete
+	the record from the database, return a message saying place is deleted from the database.
+*/
+
+
 func DeletereviewView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		session := sessions.Default(c)
@@ -261,6 +293,11 @@ func DeletereviewView(db *gorm.DB) gin.HandlerFunc {
 	return gin.HandlerFunc(fn)
 }
 
+
+/*
+	GetreviewsbyuserView - returns reviews given the user id, search the database with user id then return reviews if present else return errors.
+
+*/
 func GetreviewsbyuserView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		session := sessions.Default(c)
@@ -289,6 +326,12 @@ func GetreviewsbyuserView(db *gorm.DB) gin.HandlerFunc {
 
 }
 
+
+/*
+	GetreviewsbyplaceView - returns reviews for a particular place given the place id, search the database with place id, first check the database if the place exists,
+	if present check reviews of that particular place in the database and return them else return errors.
+
+*/
 func GetreviewsbyplaceView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		placeID, _ := strconv.Atoi(c.Param("placeID"))

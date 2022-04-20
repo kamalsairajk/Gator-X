@@ -13,6 +13,14 @@ import (
 	"gorm.io/gorm"
 )
 
+
+/*
+	Register View - registers a new user, First try to bind the requested json to the User Struct and in the case of of field names 
+	missing or are wrong, return a bad request, strip HTML input from strings using the Strip tag policy to get the relevant field 
+	details and set type to be normal, if the user exists, then return a Status Conflict, with a error message User Already exists.
+	If passed, then create the user.	
+
+*/
 func RegisterView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		var json model.Users
@@ -48,6 +56,11 @@ func RegisterView(db *gorm.DB) gin.HandlerFunc {
 
 }
 
+/*
+	Login View - logs in user, create a session with default context returns a Status Bad request if not binded, take in the entered 
+	email and password by Stripping the tags, search the users table with email and password, if found, set session id and return 
+	a success login message else return a Status unauthorized with error message invalid username and password.
+*/
 func LoginView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		session := sessions.Default(c)
@@ -70,7 +83,6 @@ func LoginView(db *gorm.DB) gin.HandlerFunc {
 			})
 			return
 		}
-		//password checking - first email and then password
 
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": "Invalid username and password",
@@ -79,6 +91,11 @@ func LoginView(db *gorm.DB) gin.HandlerFunc {
 	return gin.HandlerFunc(fn)
 
 }
+
+/*
+	Logout View - remove the user from session, check login status if not logged in return status unauthorized message, else
+	clear the session and save it. If these dont work return logout failed with status unauthorized message.
+*/
 func LogoutView(c *gin.Context) {
 	session := sessions.Default(c)
 	userId := session.Get("userId")
@@ -102,6 +119,10 @@ func LogoutView(c *gin.Context) {
 	})
 
 }
+/*
+	GetUserbyID view - return user by user ID, take in the parameter userID, use this to find the user in the user table in the database.
+	If found return the user with result as message in the object else if not found then return the error message. 
+*/
 func GetUserbyIDView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		userid, _ := strconv.Atoi(c.Param("userID"))
@@ -121,6 +142,11 @@ func GetUserbyIDView(db *gorm.DB) gin.HandlerFunc {
 	return gin.HandlerFunc(fn)
 }
 
+/*
+	DeleteUser view - deletes the user from the database, by taking in the parameter of userID, using this to find the user in the table in the
+	database. If found deletes the record from the database and returns result message with record deleted and returns the http status bad request. 
+
+*/
 func DeleteUserView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		userid, _ := strconv.Atoi(c.Param("userID"))
@@ -141,6 +167,10 @@ func DeleteUserView(db *gorm.DB) gin.HandlerFunc {
 	return gin.HandlerFunc(fn)
 }
 
+/*
+	Getallusers view -  return users present in the database, get the users with a model object array to store all users.
+	If found return the users with result as message in the object else if not found then return the empty array message.
+*/
 func GetallusersView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 
@@ -166,7 +196,13 @@ func GetallusersView(db *gorm.DB) gin.HandlerFunc {
 
 	return gin.HandlerFunc(fn)
 }
+/*
+	Register View - registers a admin user, First try to bind the requested json to the User Struct and in the case of of field names 
+	missing or are wrong, return a bad request, strip HTML input from strings using the Strip tag policy to get the relevant field 
+	details and set type to be admin, if the user exists, then return a Status Conflict, with a error message User Already exists.
+	If passed, then create the user.	
 
+*/
 
 
 func RegisterAdminView(db *gorm.DB) gin.HandlerFunc {

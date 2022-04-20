@@ -27,6 +27,8 @@ var users []model.Users
 var reviews []model.BaseReview
 var places []model.Places
 
+// setup database for unit testing 
+
 func testdb_setup(dbName string) *gorm.DB {
 
 	db, err := gorm.Open(sqlite.Open(dbName), &gorm.Config{})
@@ -42,6 +44,8 @@ func testdb_setup(dbName string) *gorm.DB {
 
 	return db
 }
+
+// initialize database with data required for testing 
 
 func initData(db *gorm.DB) {
 	users = []model.Users{
@@ -573,19 +577,17 @@ func testcase18(t *testing.T, router *gin.Engine) {
 
 	}}
 
-	
-
-
-
-
 func TestAllcases(t *testing.T) {
 
+	// setup test database
 	db := testdb_setup("test.db")
 
 	initData(db)
 
 	router := backendserver_setup(db, "teststore", "testsession")
 
+	//run individual testcases
+	
 	testcase1(t, router)
 	testcase2(t, router)
 	testcase3(t, router)

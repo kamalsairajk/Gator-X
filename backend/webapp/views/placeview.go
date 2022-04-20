@@ -13,8 +13,15 @@ import (
 	"github.com/gin-contrib/sessions"
 	"encoding/json"
 	"os"
+
+
 )
 
+
+/*
+	GetallplacesView - return all places, using an array of places model to store the results, find the database, and if the length of places greater than
+	0 return the results and if length of places is 0 then return a message that the table is currently empty.
+*/
 func GetallplacesView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 
@@ -40,6 +47,13 @@ func GetallplacesView(db *gorm.DB) gin.HandlerFunc {
 
 	return gin.HandlerFunc(fn)
 }
+
+/*
+	PostplaceView - create a place with given details, using the current session if user logged in if not then user should login and only admin users have
+	this feature to create a place, all place related details are added into a json object under the form field data and image related to the place is added
+	into the file field of the form data, after performing some data processing the data is stored into the database and if the place already exists return a
+	message of place already exists.
+*/
 func PostplaceView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 
@@ -109,6 +123,11 @@ func PostplaceView(db *gorm.DB) gin.HandlerFunc {
 	return gin.HandlerFunc(fn)
 }
 
+/*
+	GetPlacebyIDView - return a place when ID of the place is provided, placeID provided as a parameter, having a model object to store the results, when
+	queried through the database with the given id if not found return the error message else if found return the place.
+*/
+
 func GetPlacebyIDView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		placeid, _ := strconv.Atoi(c.Param("placeID"))
@@ -128,6 +147,13 @@ func GetPlacebyIDView(db *gorm.DB) gin.HandlerFunc {
 	return gin.HandlerFunc(fn)
 }
 
+
+/*
+	DeleteplaceView - deletes the place from the database, using the current session if user logged in if not then user should login and only admin users have
+	this feature to delete a place. Taking the placeID of a particular place to find the place in the database. if there isn't such place then return place
+	doesn't exist or any issue in finding the place return the error with a status bad request, if not then first remove the file from the server and then delete
+	the record from the database, return a message saying place is deleted from the database.
+*/
 func DeleteplaceView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 
@@ -183,6 +209,13 @@ func DeleteplaceView(db *gorm.DB) gin.HandlerFunc {
 	return gin.HandlerFunc(fn)
 }
 
+/*
+	EditplaceView - edit a place details with given constraints or fields, using the current session if user logged in if not then user should login and only admin users have
+	this feature to edit a place. Taking the place id as a parameter to edit and find the place in the database, if the place is not present then return a status bad request
+	else if finding the place returns an error then return the error message, if found then update the record in the database with the given details and if file is present 
+	delete existing place in the server and save the current file in the server and change this in the database along with other details. Finally return an message that says
+	the place is edited.
+*/
 func EditplaceView(db *gorm.DB) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
 		
