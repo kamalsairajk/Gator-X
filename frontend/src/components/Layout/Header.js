@@ -80,6 +80,7 @@ export default () => {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
+              className='searchbar'
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
             />
