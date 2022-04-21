@@ -3,6 +3,7 @@ import axios from 'axios'
 import Clamp from 'react-multiline-clamp';
 import {Nav} from 'react-bootstrap'
 import { formatDate } from "../utils";
+import img1 from '../../assets/asset-1.png'
 
 export default function HomePage() {
     const [posts, setPosts] = useState([])
@@ -58,5 +59,22 @@ export default function HomePage() {
                 </div>
             </div>
         </div>
+        <div className="container hero">
+                    <div className="row align-items-center text-center text-md-left">
+                        <div className="col-lg-4">
+                            <h1 className="mb-3 display-3">
+                                Share your experience with the world!
+                    </h1>
+                            <p>
+                                Join us! Login or Register. Write your review and share !!
+                    </p>
+                        </div>
+                        <div className="col-lg-8">
+                            <img src={img1} className="img-fluid" alt="img" />
+                        </div>
+                    </div>
+
+
+                </div>
     )
 }
