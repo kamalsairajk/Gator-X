@@ -37,7 +37,20 @@ class Form extends Component {
                     <label>Author:</label>
                     <input type="text" ref={this.authorRef} className="form-control" placeholder="Tag your name.." />
                 </div>
- 
+                <div className="col">
+                <select
+                value={priceRange}
+                onChange={(e) => setPriceRange(e.target.value)}
+                className="custom-select my-1 mr-sm-2"
+                >
+                <option disabled>Price Range</option>
+                <option value="1">$</option>
+                <option value="2">$$</option>
+                <option value="3">$$$</option>
+                <option value="4">$$$$</option>
+                <option value="5">$$$$$</option>
+                </select>
+          </div>
                 <div className="form-group">
                     <label>Content:</label>
                     <textarea className="form-control" rows="7"cols="25" ref={this.contentRef} placeholder="Here write your content.."></textarea>
