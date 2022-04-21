@@ -25,6 +25,10 @@ The primary location kept in mind while designing this website is Gainesville, t
 
 ## Cypress Test Video:
 
+
+https://user-images.githubusercontent.com/56202872/164358536-c58a8162-b279-4525-a8e9-55d5267a461d.mp4
+
+
 ## Backend Unit Testing Video:
 https://user-images.githubusercontent.com/30821679/164353603-12f2bb65-dbcb-482b-bc63-8f140e2c7530.mp4
 
@@ -35,6 +39,7 @@ https://user-images.githubusercontent.com/30821679/164353603-12f2bb65-dbcb-482b-
 [Sprint 4 board](https://github.com/kamalsairajk/Gator-X/projects/4)
 
 ## Documents:
+
 * [Sprint 1 Report](https://github.com/kamalsairajk/Gator-X/blob/main/Sprint-1.md)
 * [Sprint 2 Report](https://github.com/kamalsairajk/Gator-X/blob/main/Sprint-2.md)
 * [Sprint 3 Report](https://github.com/kamalsairajk/Gator-X/blob/main/Sprint-3.md)
