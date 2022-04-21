@@ -21,7 +21,22 @@ import (
 	"strings"
 	"os"
 )
+/*
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
 var users []model.Users
 
 var reviews []model.BaseReview
@@ -130,6 +145,17 @@ func initData(db *gorm.DB) {
 	db.Create(&reviews)
 
 }
+/*
+
+
+
+
+
+
+
+
+
+*/
 
 //get all users pass case 
 func testcase1(t *testing.T, router *gin.Engine) {
