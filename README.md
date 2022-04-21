@@ -21,7 +21,7 @@ The primary location kept in mind while designing this website is Gainesville, t
 1. Backend - Golang
 2. Frontend - React
 
-
+## The pratical implementation of the project along with the end-to-end tests of the frontend and the backend are described below followed by the links to the Project Board, Sprint-4 Deliverables and all the Sprint Documents.
 
 ## Demo Video:
 
