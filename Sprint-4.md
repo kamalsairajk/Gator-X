@@ -21,6 +21,10 @@ The primary location kept in mind while designing this website is Gainesville, t
 
 ### 2. Backend:
 
+* **Image upload feature**: Upload images to any particular review that a user creates or place which is created by admin. Images are saved in the server under separate folders which correspond to places and reviews. This feature is accessible when the user or admin creates a review or place respectively. Also, for space efficiency whenever a review or place is deleted then the file corresponding to it is also deleted. Also, edit review or place also changes the file if provided. This made changes on how data is exchanged as this involves form file and form data along with JSON.
+* **Creation of Admin Layer** : Admin layer is incorporated so that places can be created by the admin layer after verification of the place. Along with creation, update and delete places have an admin verification layer so that all users cannot access it. Since admin users must be created a new function i.e register admin is created for this purpose. But other features of users such as login, logout, edit and delete which were created for earlier sprints are still useful in this layer.
+* **Comments and some minor fixes**: All functions have a comment description which covers the code flow and structure. This is throughout the project structure. Minor fixes such as few ID related i.e ID not present, average rating in edit view and other validations.
+* **Tests**: Several unit test cases have been provided to validate the code's reliability. Unit test cases have been developed for the new functionalities such as the image functionality, admin layer with the register admin feature and many more that have been added during this sprint. Since some functions were edited in order to incorporate the image functionality so the unit tests that were used for these functions are also edited to use this functionality.
 
 ## Link to API Documentation:
 [API Doc](https://github.com/kamalsairajk/Gator-X/blob/main/backend/API%20Doc.MD)
