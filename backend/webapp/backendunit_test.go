@@ -603,6 +603,52 @@ func testcase18(t *testing.T, router *gin.Engine) {
 
 	}}
 
+func testcase19(t *testing.T, router *gin.Engine) {
+	w := httptest.NewRecorder()
+	var jsonData = []byte(`{
+		"name":"testuser4",
+		"email":"terstuser4@gmail.com",
+		"password":"Testuser4@345",
+		"phone":"+1 345 678 9901"
+	}`)
+	req, _ := http.NewRequest("POST", "/register", bytes.NewBuffer(jsonData))
+	router.ServeHTTP(w, req)
+	// var a string = `{"result":`
+	assert.Equal(t, 200, w.Code)
+	expoutput := `{"result":"User created in database"}`
+	assert.Equal(t, expoutput, w.Body.String())
+}
+
+func testcase20(t *testing.T, router *gin.Engine) {
+	w := httptest.NewRecorder()
+	var jsonData = []byte(`{
+		"reviewtitle":"good sandwiches",
+		"review":" The food here is good especially sandwiches",
+		"rating":3,
+		"placeid":1
+	}`)
+	req, _ := http.NewRequest("POST", "/postreview", bytes.NewBuffer(jsonData))
+	router.ServeHTTP(w, req)
+	// var a string = `{"result":`
+	assert.Equal(t, 400, w.Code)
+	expoutput := `{"error":"user not logged in"}`
+	assert.Equal(t, expoutput, w.Body.String())
+}
+
+func testcase21(t *testing.T, router *gin.Engine) {
+	w := httptest.NewRecorder()
+	var jsonData1 = []byte(`{
+		"password": "Testuser1@123",
+		"email":    "testuser1@gmail.com"
+
+	}`)
+	req, _ := http.NewRequest("POST", "/login", bytes.NewBuffer(jsonData1))
+	router.ServeHTTP(w, req)
+	// var a string = `{"result":`
+	assert.Equal(t, 200, w.Code)
+	expoutput := `{"result":"login success"}`
+	assert.Equal(t, expoutput, w.Body.String())
+}
 func TestAllcases(t *testing.T) {
 
 	// setup test database
@@ -632,4 +678,7 @@ func TestAllcases(t *testing.T) {
 	testcase16(t,router)
 	testcase17(t,router)
 	testcase18(t,router)
+	testcase19(t,router)
+	testcase20(t,router)
+	testcase21(t,router)
 }
