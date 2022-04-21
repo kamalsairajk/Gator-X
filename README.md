@@ -21,7 +21,15 @@ The primary location kept in mind while designing this website is Gainesville, t
 1. Backend - Golang
 2. Frontend - React
 
+
+
 ## Demo Video:
+
+
+
+https://user-images.githubusercontent.com/38933993/164367559-af5e4f2f-aa1c-49e5-85b2-806854961c75.mp4
+
+
 
 ## Cypress Test Video:
 
