@@ -17,6 +17,8 @@ The primary location kept in mind while designing this website is Gainesville, t
 
 * **Added Ratings feature**: The user will now be able to add rating to a review in the range of 1-5 which showcases the degree of the experience a user had at a place which correlates to the overall experience of a user including hospitality, customer service and the place offering.
 
+* **Placeholders for the added reviews: The reviews added by the user will be arranged in a placeholder card fashion allowing the user to browse through the reviews posted whenever the user clicks the reviews page. 
+
 * **End-to-end testing using cypress**: All the new features added to the frontend have been end-to-end tested and the tests can be found at [Tests](https://github.com/kamalsairajk/Gator-X/tree/main/frontend/cypress)
 
 ### 2. Backend:
