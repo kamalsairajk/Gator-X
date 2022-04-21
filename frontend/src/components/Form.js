@@ -37,6 +37,17 @@ class Form extends Component {
                     <label>Author:</label>
                     <input type="text" ref={this.authorRef} className="form-control" placeholder="Tag your name.." />
                 </div>
+
+                <div className="col">
+                <input
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                className="form-control"
+                type="text"
+                placeholder="location"
+                />
+                </div>
+
                 <div className="col">
                 <select
                 value={priceRange}
@@ -50,7 +61,8 @@ class Form extends Component {
                 <option value="4">$$$$</option>
                 <option value="5">$$$$$</option>
                 </select>
-          </div>
+                </div>
+                
                 <div className="form-group">
                     <label>Content:</label>
                     <textarea className="form-control" rows="7"cols="25" ref={this.contentRef} placeholder="Here write your content.."></textarea>
