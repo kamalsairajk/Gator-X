@@ -11,9 +11,9 @@ The primary location kept in mind while designing this website is Gainesville, t
 
 ## Tasks accomplished in Sprint 4:
 ### 1. Frontend:
-* **Added Upload image feature to reviews**: The user will now be able to add images in addition to the text, category of the place and the author name. This shows the users the real condition of a place versus the advertised pictures which will help users in making the right choice to pick a place.
+* **Added Price Range feature to reviews**: The price range feature is added to the reviews so that the user can choose a place along with the appropriate price range suitable to the user. 
 
-* **Added SearchBar component to navbar**: The user will now be able to search to find exactly what they want. They need not waste their precious time in browsing.
+* **Added SearchBar component to navbar**: The user will now be able to search the place name and the location along with the price range which helps in narrowing search for the user and recommending places which would most suit the user's taste.
 
 * **Added Ratings feature**: The user will now be able to add rating to a review in the range of 1-5 which showcases the degree of the experience a user had at a place which correlates to the overall experience of a user including hospitality, customer service and the place offering.
 
