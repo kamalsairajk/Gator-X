@@ -38,7 +38,10 @@ https://user-images.githubusercontent.com/30821679/164353603-12f2bb65-dbcb-482b-
 ## Link to project board: 
 [All Boards](https://github.com/kamalsairajk/Gator-X/projects)
 
-[Sprint 4 board](https://github.com/kamalsairajk/Gator-X/projects/4)
+
+## Sprint 4 deliverables 
+* [Sprint 4 board](https://github.com/kamalsairajk/Gator-X/projects/4)
+* [Sprint 4 Report](https://github.com/kamalsairajk/Gator-X/blob/main/Sprint-4.md)
 
 ## Documents:
 
