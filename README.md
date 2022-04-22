@@ -40,6 +40,12 @@ https://user-images.githubusercontent.com/56202872/164358536-c58a8162-b279-4525-
 ## Backend Unit Testing Video:
 https://user-images.githubusercontent.com/30821679/164353603-12f2bb65-dbcb-482b-bc63-8f140e2c7530.mp4
 
+## Deployment Notes
+* The application is deployed onto a url using aws and nginx
+* Application URL: www.yuvarmaddipati.xyz
+* Instances were created using an aws account and mapped onto a custom url.
+* The application is deployed onto an ubuntu server (Version 20)
+
 ## Link to API Documentation:
 [API Doc](https://github.com/kamalsairajk/Gator-X/blob/main/backend/API%20Doc.MD)
 
