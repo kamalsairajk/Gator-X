@@ -45,6 +45,7 @@ https://user-images.githubusercontent.com/30821679/164353603-12f2bb65-dbcb-482b-
 * Application URL: www.yuvarmaddipati.xyz
 * Instances were created using an aws account and mapped onto a custom url.
 * The application is deployed onto an ubuntu server (Version 20)
+* Security Certificates are applied on ssh, http and https protocols using 'Certbot'.
 
 ## Link to API Documentation:
 [API Doc](https://github.com/kamalsairajk/Gator-X/blob/main/backend/API%20Doc.MD)
